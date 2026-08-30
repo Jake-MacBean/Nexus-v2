@@ -1,0 +1,14 @@
+{
+  "name": "@nexus-v2/worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json --pretty false",
+    "start": "node dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit --pretty false"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3"
+  }
+}

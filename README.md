@@ -4,9 +4,9 @@ Nexus v2 is being built as a clean, TypeScript-first platform. This repository c
 
 ## Current work packet
 
-`P0.01-T01 - Initialize repository and runtime pins`
+`P0.01-T02 - Scaffold apps`
 
-The root toolchain is pinned and provides a strict TypeScript baseline, deterministic dependency installation, formatting conventions, and a single verification entry point. Package and application ownership boundaries will be scaffolded by later Phase 0 work packets.
+The repository contains minimal smoke-only web, API, and worker applications. They prove that the pinned monorepo toolchain can build and start each deployable shape without introducing Nexus business behavior.
 
 ## Prerequisites
 
@@ -37,13 +37,36 @@ For the initial checkout, before a lockfile exists, use `pnpm install`. The comm
 | `pnpm test`               | Run the test gate. The implementation is intentionally deferred in T01.                |
 | `pnpm architecture:check` | Run architecture-contract checks. The implementation is intentionally deferred in T01. |
 | `pnpm format:check`       | Verify formatting with Prettier.                                                       |
+| `pnpm dev:web`            | Start the web development server.                                                      |
+| `pnpm start:api`          | Start the previously built API application.                                            |
+| `pnpm start:worker`       | Start the previously built worker health process.                                      |
+| `pnpm preview:web`        | Preview the previously built web application.                                          |
 | `pnpm verify`             | Run every current Phase 0 gate in dependency order.                                    |
 
 Placeholder gates print an explicit message and succeed only because their implementations belong to later bounded Phase 0 work packets. They must be replaced rather than bypassed when those packets are executed.
 
 ## Environment configuration
 
-Copy `.env.example` to a local `.env` only when a later work packet requires runtime configuration. The example contains names and non-secret local values only. Never commit `.env`, credentials, production identifiers, customer data, or secret-looking placeholders.
+Copy `.env.example` to a local `.env` when local overrides are needed. The example contains names and non-secret local values only. Never commit `.env`, credentials, production identifiers, customer data, or secret-looking placeholders.
+
+The default local topology is:
+
+- Web: `http://127.0.0.1:5173`
+- API health: `http://127.0.0.1:3000/health`
+- API readiness: `http://127.0.0.1:3000/ready`
+- Worker health: `http://127.0.0.1:3001/health`
+
+The web API endpoint is configured with `VITE_API_BASE_URL`. The API permits the configured `WEB_ORIGIN` for local cross-origin health checks.
+
+## Application boundaries
+
+| Application   | Owns                                                | Must not own                                                        |
+| ------------- | --------------------------------------------------- | ------------------------------------------------------------------- |
+| `apps/web`    | React smoke UI and API-health adapter               | Server, domain, database, authentication, or business logic         |
+| `apps/api`    | Fastify process and trivial health/readiness routes | Commands, queries, domain rules, persistence, or provider logic     |
+| `apps/worker` | Worker process lifecycle and basic health reporting | Business jobs, workflows, schedules, persistence, or provider logic |
+
+Each application has a local README documenting its commands, environment inputs, and forbidden responsibilities.
 
 ## Controlling sources
 

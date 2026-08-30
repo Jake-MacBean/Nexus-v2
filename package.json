@@ -11,12 +11,16 @@
   "packageManager": "pnpm@11.24.0",
   "scripts": {
     "architecture:check": "node -e \"console.log('Architecture checks are scaffolded; implementation begins in a later Phase 0 packet.')\"",
-    "build": "tsc -b --pretty false",
+    "build": "pnpm exec tsc -p tsconfig.json --pretty false && pnpm --recursive --if-present build",
+    "dev:web": "pnpm --filter @nexus-v2/web dev",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "node -e \"console.log('Linting is scaffolded; implementation begins in a later Phase 0 packet.')\"",
+    "preview:web": "pnpm --filter @nexus-v2/web preview",
+    "start:api": "pnpm --filter @nexus-v2/api start",
+    "start:worker": "pnpm --filter @nexus-v2/worker start",
     "test": "node -e \"console.log('Tests are scaffolded; implementation begins in a later Phase 0 packet.')\"",
-    "typecheck": "tsc -b --pretty false",
+    "typecheck": "pnpm exec tsc -p tsconfig.json --pretty false && pnpm --recursive --if-present typecheck",
     "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm architecture:check && pnpm build"
   },
   "devDependencies": {
