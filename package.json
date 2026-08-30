@@ -1,0 +1,26 @@
+{
+  "name": "@nexus-v2/root",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Nexus v2 Phase 0 Engineering Harness",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": "24.x",
+    "pnpm": "11.24.0"
+  },
+  "packageManager": "pnpm@11.24.0",
+  "scripts": {
+    "architecture:check": "node -e \"console.log('Architecture checks are scaffolded; implementation begins in a later Phase 0 packet.')\"",
+    "build": "tsc -b --pretty false",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "node -e \"console.log('Linting is scaffolded; implementation begins in a later Phase 0 packet.')\"",
+    "test": "node -e \"console.log('Tests are scaffolded; implementation begins in a later Phase 0 packet.')\"",
+    "typecheck": "tsc -b --pretty false",
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm architecture:check && pnpm build"
+  },
+  "devDependencies": {
+    "prettier": "3.9.6",
+    "typescript": "7.0.2"
+  }
+}

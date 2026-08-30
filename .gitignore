@@ -1,0 +1,39 @@
+# Dependencies and package-manager state
+node_modules/
+.pnpm-store/
+
+# Build and test output
+dist/
+build/
+coverage/
+.turbo/
+*.tsbuildinfo
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Local infrastructure and tooling
+.terraform/
+*.tfstate
+*.tfstate.*
+.temporal/
+.cache/
+.tmp/
+tmp/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+pnpm-debug.log*
+
