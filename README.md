@@ -4,7 +4,7 @@ Nexus v2 is being built as a clean, TypeScript-first platform. This repository c
 
 ## Current work packet
 
-`P0.02-T02 - Implement automated architecture-boundary enforcement`
+`P0.03-T01 - Create the repeatable local infrastructure stack`
 
 The repository contains minimal smoke-only deployable applications plus explicit package boundaries for Nexus architectural capabilities and domains. Every package remains an implementation-free scaffold.
 
@@ -13,6 +13,7 @@ The repository contains minimal smoke-only deployable applications plus explicit
 - Node.js 24.20.0 LTS
 - Corepack enabled
 - pnpm 11.24.0, selected through the `packageManager` field
+- Docker Desktop with the Linux container engine and Docker Compose
 
 Use the pinned Node version from `.nvmrc` or `.node-version`. Do not use npm, Yarn, or an unpinned pnpm release for repository operations.
 
@@ -38,6 +39,11 @@ For the initial checkout, before a lockfile exists, use `pnpm install`. The comm
 | `pnpm architecture:check` | Validate the real workspace source and manifest dependency graph.       |
 | `pnpm architecture:test`  | Run positive and negative fixture tests for the architecture checker.   |
 | `pnpm format:check`       | Verify formatting with Prettier.                                        |
+| `pnpm infra:up`           | Start and health-check local PostgreSQL and Temporal.                   |
+| `pnpm infra:health`       | Validate the intended PostgreSQL database and Temporal namespace.       |
+| `pnpm infra:down`         | Stop local infrastructure without deleting its data.                    |
+| `pnpm infra:reset`        | Reset only Nexus v2 local data, then recreate and verify the services.  |
+| `pnpm infra:logs`         | Print recent local infrastructure logs.                                 |
 | `pnpm dev:web`            | Start the web development server.                                       |
 | `pnpm start:api`          | Start the previously built API application.                             |
 | `pnpm start:worker`       | Start the previously built worker health process.                       |
@@ -56,8 +62,21 @@ The default local topology is:
 - API health: `http://127.0.0.1:3000/health`
 - API readiness: `http://127.0.0.1:3000/ready`
 - Worker health: `http://127.0.0.1:3001/health`
+- PostgreSQL: `127.0.0.1:55432`, database/user `nexus_v2_dev`
+- Temporal gRPC: `127.0.0.1:7233`, namespace `nexus-v2-local`
+- Temporal UI: `http://127.0.0.1:8233`
 
 The web API endpoint is configured with `VITE_API_BASE_URL`. The API permits the configured `WEB_ORIGIN` for local cross-origin health checks.
+
+## Local infrastructure
+
+PostgreSQL is Nexus's local canonical-data service. Temporal is Nexus's local durable-workflow runtime. Their responsibilities and persistent state remain separate: PostgreSQL uses `nexus-v2-local-postgres-data`, while Temporal's official lightweight development server uses `nexus-v2-local-temporal-data` for its embedded SQLite state.
+
+The images are pinned to `postgres:18.6` and `temporalio/temporal:1.8.2`; `latest` is not used. Start everything with `pnpm infra:up`, validate it with `pnpm infra:health`, and stop it without data loss using `pnpm infra:down`.
+
+`pnpm infra:reset` is intentionally destructive only to the Compose project `nexus-v2-local` and its two explicitly allow-listed local volumes. It verifies the rendered project, service, and volume names before removing data, then recreates both services and proves they are healthy. It never deletes unrelated Docker resources or contacts cloud infrastructure.
+
+See `infra/README.md` for exact credentials, optional local port overrides, health-check behavior, reset details, and troubleshooting for Docker availability, occupied ports, and unhealthy containers.
 
 ## Application boundaries
 
