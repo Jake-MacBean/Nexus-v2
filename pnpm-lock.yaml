@@ -53,6 +53,46 @@ importers:
         specifier: 24.13.3
         version: 24.13.3
 
+  packages/ai: {}
+
+  packages/application: {}
+
+  packages/audit: {}
+
+  packages/authority: {}
+
+  packages/axis: {}
+
+  packages/contracts: {}
+
+  packages/cortex: {}
+
+  packages/current: {}
+
+  packages/database: {}
+
+  packages/edge: {}
+
+  packages/events: {}
+
+  packages/integrations: {}
+
+  packages/kernel: {}
+
+  packages/loop: {}
+
+  packages/memory: {}
+
+  packages/observability: {}
+
+  packages/signal: {}
+
+  packages/testing: {}
+
+  packages/workflows: {}
+
+  packages/workspaces: {}
+
 packages:
 
   '@fastify/ajv-compiler@4.0.6':

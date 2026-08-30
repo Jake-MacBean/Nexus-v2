@@ -4,9 +4,9 @@ Nexus v2 is being built as a clean, TypeScript-first platform. This repository c
 
 ## Current work packet
 
-`P0.01-T02 - Scaffold apps`
+`P0.02-T01 - Scaffold shared and domain packages`
 
-The repository contains minimal smoke-only web, API, and worker applications. They prove that the pinned monorepo toolchain can build and start each deployable shape without introducing Nexus business behavior.
+The repository contains minimal smoke-only deployable applications plus explicit package boundaries for Nexus architectural capabilities and domains. Every package remains an implementation-free scaffold.
 
 ## Prerequisites
 
@@ -67,6 +67,42 @@ The web API endpoint is configured with `VITE_API_BASE_URL`. The API permits the
 | `apps/worker` | Worker process lifecycle and basic health reporting | Business jobs, workflows, schedules, persistence, or provider logic |
 
 Each application has a local README documenting its commands, environment inputs, and forbidden responsibilities.
+
+## Package topology
+
+Nexus begins as a TypeScript modular monolith. `apps/*` are deployable adapter surfaces; `packages/*` hold architectural capabilities and domain responsibilities. A package boundary establishes code ownership and dependency direction, not a separately deployed microservice. Services earn deployment separation only when scaling, reliability, security, or operational ownership creates a demonstrated need.
+
+### Cross-cutting capability packages
+
+| Package         | Responsibility                                                    |
+| --------------- | ----------------------------------------------------------------- |
+| `kernel`        | Domain-neutral primitives that truly apply across Nexus           |
+| `contracts`     | Stable schemas and contracts crossing approved boundaries         |
+| `application`   | Future canonical Commands, Queries, and application orchestration |
+| `database`      | Persistence, migrations, and database adapters                    |
+| `authority`     | Future authority evaluation and enforcement boundary              |
+| `audit`         | Reconstructable business accountability evidence                  |
+| `events`        | Canonical event contracts and durable publishing boundary         |
+| `workflows`     | Durable workflow execution and runtime integration                |
+| `integrations`  | External provider adapters and translation boundaries             |
+| `ai`            | Model Gateway, Alex runtime, reasoning, and tool adapters         |
+| `memory`        | Structured and episodic memory retrieval infrastructure           |
+| `workspaces`    | Visual Grammar and Workspace Specification contracts              |
+| `observability` | Technical logs, metrics, traces, and health telemetry             |
+| `testing`       | Test-only fixtures, builders, fakes, and harness support          |
+
+### Domain packages
+
+| Package   | Canonical responsibility                                              |
+| --------- | --------------------------------------------------------------------- |
+| `cortex`  | Tasks, projects, commitments, scheduling, and operational execution   |
+| `loop`    | People, organizations, relationships, roles, and interaction history  |
+| `axis`    | Opportunities, proposals, contracts, and commercial progression       |
+| `signal`  | Marketing programs, campaigns, content, audiences, and learning       |
+| `current` | Banking, AR/AP, invoices, payments, expenses, budgets, and cash flow  |
+| `edge`    | Derived cross-domain intelligence without duplicating canonical facts |
+
+Each package exposes only its root public entry point. Package READMEs state future ownership, prohibited responsibilities, allowed dependency direction, and concrete placement examples. Automated import enforcement is intentionally deferred to P0.02-T02.
 
 ## Controlling sources
 

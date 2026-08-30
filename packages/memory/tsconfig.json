@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": false,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "sourceMap": true,
+    "tsBuildInfoFile": "../../node_modules/.cache/typescript/memory.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts"]
+}
