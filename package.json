@@ -10,7 +10,8 @@
   },
   "packageManager": "pnpm@11.24.0",
   "scripts": {
-    "architecture:check": "node -e \"console.log('Architecture checks are scaffolded; implementation begins in a later Phase 0 packet.')\"",
+    "architecture:check": "node architecture/check.mjs",
+    "architecture:test": "node --test architecture/checker.test.mjs",
     "build": "pnpm exec tsc -p tsconfig.json --pretty false && pnpm --recursive --if-present build",
     "dev:web": "pnpm --filter @nexus-v2/web dev",
     "format": "prettier --write .",
@@ -21,7 +22,7 @@
     "start:worker": "pnpm --filter @nexus-v2/worker start",
     "test": "node -e \"console.log('Tests are scaffolded; implementation begins in a later Phase 0 packet.')\"",
     "typecheck": "pnpm exec tsc -p tsconfig.json --pretty false && pnpm --recursive --if-present typecheck",
-    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm architecture:check && pnpm build"
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm architecture:test && pnpm architecture:check && pnpm build"
   },
   "devDependencies": {
     "prettier": "3.9.6",

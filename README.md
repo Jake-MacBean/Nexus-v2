@@ -4,7 +4,7 @@ Nexus v2 is being built as a clean, TypeScript-first platform. This repository c
 
 ## Current work packet
 
-`P0.02-T01 - Scaffold shared and domain packages`
+`P0.02-T02 - Implement automated architecture-boundary enforcement`
 
 The repository contains minimal smoke-only deployable applications plus explicit package boundaries for Nexus architectural capabilities and domains. Every package remains an implementation-free scaffold.
 
@@ -29,21 +29,22 @@ For the initial checkout, before a lockfile exists, use `pnpm install`. The comm
 
 ## Root commands
 
-| Command                   | Purpose                                                                                |
-| ------------------------- | -------------------------------------------------------------------------------------- |
-| `pnpm build`              | Build/type-check the currently scaffolded TypeScript project graph.                    |
-| `pnpm typecheck`          | Run the strict TypeScript compiler without emitting files.                             |
-| `pnpm lint`               | Run the lint gate. The implementation is intentionally deferred in T01.                |
-| `pnpm test`               | Run the test gate. The implementation is intentionally deferred in T01.                |
-| `pnpm architecture:check` | Run architecture-contract checks. The implementation is intentionally deferred in T01. |
-| `pnpm format:check`       | Verify formatting with Prettier.                                                       |
-| `pnpm dev:web`            | Start the web development server.                                                      |
-| `pnpm start:api`          | Start the previously built API application.                                            |
-| `pnpm start:worker`       | Start the previously built worker health process.                                      |
-| `pnpm preview:web`        | Preview the previously built web application.                                          |
-| `pnpm verify`             | Run every current Phase 0 gate in dependency order.                                    |
+| Command                   | Purpose                                                                 |
+| ------------------------- | ----------------------------------------------------------------------- |
+| `pnpm build`              | Build/type-check the currently scaffolded TypeScript project graph.     |
+| `pnpm typecheck`          | Run the strict TypeScript compiler without emitting files.              |
+| `pnpm lint`               | Run the lint gate. The implementation is intentionally deferred in T01. |
+| `pnpm test`               | Run the test gate. The implementation is intentionally deferred in T01. |
+| `pnpm architecture:check` | Validate the real workspace source and manifest dependency graph.       |
+| `pnpm architecture:test`  | Run positive and negative fixture tests for the architecture checker.   |
+| `pnpm format:check`       | Verify formatting with Prettier.                                        |
+| `pnpm dev:web`            | Start the web development server.                                       |
+| `pnpm start:api`          | Start the previously built API application.                             |
+| `pnpm start:worker`       | Start the previously built worker health process.                       |
+| `pnpm preview:web`        | Preview the previously built web application.                           |
+| `pnpm verify`             | Run every current Phase 0 gate in dependency order.                     |
 
-Placeholder gates print an explicit message and succeed only because their implementations belong to later bounded Phase 0 work packets. They must be replaced rather than bypassed when those packets are executed.
+The lint and general test gates remain explicit placeholders because their implementations belong to later bounded Phase 0 work packets. The architecture gate is real and runs both its fixture suite and repository validation through `pnpm verify`.
 
 ## Environment configuration
 
@@ -102,7 +103,13 @@ Nexus begins as a TypeScript modular monolith. `apps/*` are deployable adapter s
 | `current` | Banking, AR/AP, invoices, payments, expenses, budgets, and cash flow  |
 | `edge`    | Derived cross-domain intelligence without duplicating canonical facts |
 
-Each package exposes only its root public entry point. Package READMEs state future ownership, prohibited responsibilities, allowed dependency direction, and concrete placement examples. Automated import enforcement is intentionally deferred to P0.02-T02.
+Each package exposes only its root public entry point. Package READMEs state future ownership, prohibited responsibilities, allowed dependency direction, and concrete placement examples.
+
+## Automated architecture enforcement
+
+The repository-owned checker parses every TypeScript and TSX module under workspace `src` directories and validates source imports, Nexus dependencies declared in workspace manifests, public entry points, package-specific allow-lists, and circular package dependencies. `architecture/policy.mjs` is the single policy location; workspace paths and names are discovered from the repository rather than copied into the checker.
+
+Run `pnpm architecture:check` for the real repository and `pnpm architecture:test` for isolated positive and intentional-negative fixtures. A failure reports the importing workspace and file, the imported package or path, and the rule to fix. See `architecture/README.md` for the complete encoded model and remediation guidance.
 
 ## Controlling sources
 

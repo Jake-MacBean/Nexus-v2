@@ -25,7 +25,7 @@ This scaffold currently declares no runtime workspace dependencies.
 - Consumers must import through `@nexus-v2/ai`; deep imports into `src` or `dist` internals are prohibited.
 - Cross-domain behavior must be coordinated through approved application capabilities, events, or workflows rather than arbitrary domain-to-domain imports.
 
-Automated enforcement is intentionally deferred to P0.02-T02.
+Automated enforcement is implemented by the root `pnpm architecture:check` command and the policy in `architecture/policy.mjs`.
 
 ## Future work that belongs here
 
