@@ -70,6 +70,20 @@ export default defineConfig({
           testTimeout: 15_000,
         },
       },
+      {
+        test: {
+          clearMocks: true,
+          environment: 'node',
+          include: ['evaluations/**/*.eval.test.ts'],
+          name: 'eval-harness',
+          passWithNoTests: false,
+          restoreMocks: true,
+          setupFiles: ['./testing/setup/network.ts'],
+          testTimeout: 5_000,
+          unstubEnvs: true,
+          unstubGlobals: true,
+        },
+      },
     ],
   },
 });

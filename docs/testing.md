@@ -6,13 +6,13 @@ Repository bootstrap/tooling written in JavaScript or MJS may continue to use No
 
 ## Categories and discovery
 
-| Category    | Filename                                          | Environment                                 | Normal `verify` | Infrastructure              |
-| ----------- | ------------------------------------------------- | ------------------------------------------- | --------------- | --------------------------- |
-| Unit        | `*.test.ts`, `*.test.tsx`                         | Node for API/worker/packages; jsdom for web | Yes             | None                        |
-| Integration | `*.integration.test.ts`, `*.integration.test.tsx` | Node                                        | No              | Explicit local dependencies |
-| Evaluation  | `*.eval.test.ts`, `*.eval.test.tsx`               | Reserved for P0.05-T02                      | No              | Not implemented             |
+| Category    | Filename                                          | Environment                                 | Normal `verify`        | Infrastructure              |
+| ----------- | ------------------------------------------------- | ------------------------------------------- | ---------------------- | --------------------------- |
+| Unit        | `*.test.ts`, `*.test.tsx`                         | Node for API/worker/packages; jsdom for web | Yes                    | None                        |
+| Integration | `*.integration.test.ts`, `*.integration.test.tsx` | Node                                        | No                     | Explicit local dependencies |
+| Evaluation  | `*.eval.test.ts`, `*.eval.test.tsx`               | Explicit evaluation-harness Vitest project  | Harness self-test only | None in Phase 0             |
 
-Unit projects explicitly exclude integration and evaluation names. The integration project includes only integration names and excludes evaluation names. Do not add evaluation behavior, model calls, or model mocks to either correctness category.
+Unit projects explicitly exclude integration and evaluation names. The integration project includes only integration names and excludes evaluation names. Evaluation-harness tests run only through the explicit `eval-harness` project and remain provider-free. Do not add model calls or model mocks to the correctness categories.
 
 New unit tests under `apps/api/src`, `apps/worker/src`, `apps/web/src`, or any `packages/*/src` workspace join the appropriate suite automatically. Empty packages need no placeholder tests. Put a test beside its production module; put reusable fixture builders/fakes in `packages/testing`; keep repository-tooling tests beside their tooling.
 
@@ -23,6 +23,8 @@ pnpm test                 # fast unit suite, Node plus jsdom
 pnpm test:unit            # explicit unit-suite alias
 pnpm test:coverage        # unit suite plus text/JSON/HTML/LCOV coverage
 pnpm verify               # all fast repository gates, including unit tests
+pnpm eval:self            # synthetic provider-free evaluation-harness proofs
+pnpm eval                 # planned product evaluation catalog
 
 pnpm db:local:up          # start PostgreSQL only
 pnpm test:integration     # all current integration suites

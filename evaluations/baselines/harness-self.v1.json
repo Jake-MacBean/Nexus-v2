@@ -1,0 +1,35 @@
+{
+  "baselineVersion": 1,
+  "name": "Harness comparison mechanics v1",
+  "description": "Synthetic engineering baseline only. It is not an Alex or Nexus product-performance baseline.",
+  "snapshots": [
+    {
+      "scenarioId": "harness.critical-fail",
+      "scenarioVersion": 1,
+      "outcome": "PASS",
+      "score": 0,
+      "critical": true
+    },
+    {
+      "scenarioId": "harness.fail",
+      "scenarioVersion": 1,
+      "outcome": "PASS",
+      "score": 0,
+      "critical": false
+    },
+    {
+      "scenarioId": "harness.numeric-pass",
+      "scenarioVersion": 1,
+      "outcome": "PASS",
+      "score": 0.7,
+      "critical": false
+    },
+    {
+      "scenarioId": "harness.pass",
+      "scenarioVersion": 1,
+      "outcome": "FAIL",
+      "score": 1,
+      "critical": false
+    }
+  ]
+}

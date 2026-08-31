@@ -4,9 +4,9 @@ Nexus v2 is being built as a clean, TypeScript-first platform. This repository c
 
 ## Current work packet
 
-`P0.05-T01 - Implement the standardized Nexus unit and integration test harness`
+`P0.05-T02 - Implement the Nexus evaluation harness`
 
-The repository contains minimal smoke-only deployable applications, explicit package boundaries, a repeatable PostgreSQL/Drizzle migration harness, deterministic fixtures, and a standardized Vitest correctness harness. No Nexus business schema or behavior has been introduced.
+The repository contains minimal smoke-only deployable applications, explicit package boundaries, a repeatable PostgreSQL/Drizzle migration harness, deterministic fixtures, a standardized Vitest correctness harness, and a provider-free evaluation system. Planned evaluations document future expectations without claiming that unbuilt Nexus capabilities pass. No Nexus business schema or behavior has been introduced.
 
 ## Prerequisites
 
@@ -39,6 +39,11 @@ For the initial checkout, before a lockfile exists, use `pnpm install`. The comm
 | `pnpm test:unit`                 | Explicit alias for the fast unit test suite.                            |
 | `pnpm test:integration`          | Run serialized tests against recognized local PostgreSQL.               |
 | `pnpm test:coverage`             | Run unit tests with text, JSON, HTML, and LCOV coverage.                |
+| `pnpm eval`                      | Run the product evaluation catalog; planned capabilities visibly skip.  |
+| `pnpm eval:self`                 | Prove evaluation mechanics with provider-free synthetic evidence.       |
+| `pnpm eval:list`                 | List every scenario, category, version, and implementation status.      |
+| `pnpm eval:report`               | Run the catalog and write an ignored structured JSON report.            |
+| `pnpm eval:baseline`             | Prove synthetic regression and improvement comparison mechanics.        |
 | `pnpm architecture:check`        | Validate the real workspace source and manifest dependency graph.       |
 | `pnpm architecture:test`         | Run positive and negative fixture tests for the architecture checker.   |
 | `pnpm database:governance`       | Validate committed migration artifacts and prohibit schema push.        |
@@ -67,7 +72,7 @@ The lint gate remains an explicit placeholder because its implementation belongs
 
 The database governance gate also runs in `pnpm verify` without requiring live infrastructure. Live database commands require `DATABASE_URL`; use the loopback-only value in `.env.example`. See `packages/database/README.md` for connection ownership, migration authoring, rebuild safety, and drift-detection limits.
 
-Vitest is the standard runner for TypeScript/React unit and integration tests. Unit tests are fast and infrastructure-independent; integration tests are explicit and currently use recognized local PostgreSQL only. Evaluation tests are reserved for P0.05-T02 and excluded from both suites. See `docs/testing.md` for naming, environments, network isolation, fixtures, coverage, cleanup, and test-writing rules.
+Vitest is the standard runner for TypeScript/React unit and integration tests. Unit tests are fast and infrastructure-independent; integration tests are explicit and currently use recognized local PostgreSQL only. Evaluation-harness tests remain explicitly discovered through `pnpm eval:self` and excluded from both correctness suites. See `docs/testing.md` for correctness-test rules and `evaluations/README.md` for evaluation scenarios, outcomes, baselines, governance, and provider-cost isolation.
 
 ## Environment configuration
 
