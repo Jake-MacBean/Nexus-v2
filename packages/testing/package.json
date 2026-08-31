@@ -16,7 +16,15 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json --pretty false",
-    "typecheck": "tsc -p tsconfig.json --noEmit --pretty false"
+    "build": "pnpm --filter @nexus-v2/database build && tsc -p tsconfig.json --pretty false",
+    "fixtures:test": "pnpm --filter @nexus-v2/database build && tsc -p tsconfig.json --pretty false && node --test dist/fixtures.test.js",
+    "fixtures:test:integration": "pnpm --filter @nexus-v2/database build && tsc -p tsconfig.json --pretty false && node --env-file-if-exists=../../.env --test dist/postgres-fixture.integration.test.js",
+    "typecheck": "pnpm --filter @nexus-v2/database build && tsc -p tsconfig.json --noEmit --pretty false"
+  },
+  "dependencies": {
+    "@nexus-v2/database": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3"
   }
 }

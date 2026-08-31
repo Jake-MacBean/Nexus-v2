@@ -4,9 +4,9 @@ Nexus v2 is being built as a clean, TypeScript-first platform. This repository c
 
 ## Current work packet
 
-`P0.04-T01 - Implement the Nexus database and migration harness`
+`P0.04-T02 - Create deterministic fixture and seeding conventions`
 
-The repository contains minimal smoke-only deployable applications, explicit package boundaries, and a repeatable PostgreSQL/Drizzle migration harness. No Nexus business schema or behavior has been introduced.
+The repository contains minimal smoke-only deployable applications, explicit package boundaries, a repeatable PostgreSQL/Drizzle migration harness, and deterministic test-only fixture conventions. No Nexus business schema or behavior has been introduced.
 
 ## Prerequisites
 
@@ -30,37 +30,41 @@ For the initial checkout, before a lockfile exists, use `pnpm install`. The comm
 
 ## Root commands
 
-| Command                    | Purpose                                                                 |
-| -------------------------- | ----------------------------------------------------------------------- |
-| `pnpm build`               | Build/type-check the currently scaffolded TypeScript project graph.     |
-| `pnpm typecheck`           | Run the strict TypeScript compiler without emitting files.              |
-| `pnpm lint`                | Run the lint gate. The implementation is intentionally deferred in T01. |
-| `pnpm test`                | Run the test gate. The implementation is intentionally deferred in T01. |
-| `pnpm architecture:check`  | Validate the real workspace source and manifest dependency graph.       |
-| `pnpm architecture:test`   | Run positive and negative fixture tests for the architecture checker.   |
-| `pnpm database:governance` | Validate committed migration artifacts and prohibit schema push.        |
-| `pnpm db:local:up`         | Start and health-check only the local PostgreSQL service.               |
-| `pnpm db:generate`         | Generate a reviewable SQL migration from the approved Drizzle schema.   |
-| `pnpm db:check`            | Validate migration snapshots plus repository database governance.       |
-| `pnpm db:migrate`          | Apply only pending committed migrations.                                |
-| `pnpm db:status`           | Report database identity, server, migration, and sentinel-table status. |
-| `pnpm db:test:integration` | Run the destructive, strictly local migration lifecycle test.           |
-| `pnpm db:rebuild`          | Strictly local-only database rebuild, migration, and status check.      |
-| `pnpm format:check`        | Verify formatting with Prettier.                                        |
-| `pnpm infra:up`            | Start and health-check local PostgreSQL and Temporal.                   |
-| `pnpm infra:health`        | Validate the intended PostgreSQL database and Temporal namespace.       |
-| `pnpm infra:down`          | Stop local infrastructure without deleting its data.                    |
-| `pnpm infra:reset`         | Reset only Nexus v2 local data, then recreate and verify the services.  |
-| `pnpm infra:logs`          | Print recent local infrastructure logs.                                 |
-| `pnpm dev:web`             | Start the web development server.                                       |
-| `pnpm start:api`           | Start the previously built API application.                             |
-| `pnpm start:worker`        | Start the previously built worker health process.                       |
-| `pnpm preview:web`         | Preview the previously built web application.                           |
-| `pnpm verify`              | Run every current Phase 0 gate in dependency order.                     |
+| Command                          | Purpose                                                                 |
+| -------------------------------- | ----------------------------------------------------------------------- |
+| `pnpm build`                     | Build/type-check the currently scaffolded TypeScript project graph.     |
+| `pnpm typecheck`                 | Run the strict TypeScript compiler without emitting files.              |
+| `pnpm lint`                      | Run the lint gate. The implementation is intentionally deferred in T01. |
+| `pnpm test`                      | Run the test gate. The implementation is intentionally deferred in T01. |
+| `pnpm architecture:check`        | Validate the real workspace source and manifest dependency graph.       |
+| `pnpm architecture:test`         | Run positive and negative fixture tests for the architecture checker.   |
+| `pnpm database:governance`       | Validate committed migration artifacts and prohibit schema push.        |
+| `pnpm db:local:up`               | Start and health-check only the local PostgreSQL service.               |
+| `pnpm db:generate`               | Generate a reviewable SQL migration from the approved Drizzle schema.   |
+| `pnpm db:check`                  | Validate migration snapshots plus repository database governance.       |
+| `pnpm db:migrate`                | Apply only pending committed migrations.                                |
+| `pnpm db:status`                 | Report database identity, server, migration, and sentinel-table status. |
+| `pnpm db:test:integration`       | Run the destructive, strictly local migration lifecycle test.           |
+| `pnpm db:rebuild`                | Strictly local-only database rebuild, migration, and status check.      |
+| `pnpm format:check`              | Verify formatting with Prettier.                                        |
+| `pnpm fixtures:test`             | Verify deterministic descriptors, safety, and fixture-scope cleanup.    |
+| `pnpm fixtures:test:integration` | Prove temporary PostgreSQL fixture setup and teardown locally.          |
+| `pnpm infra:up`                  | Start and health-check local PostgreSQL and Temporal.                   |
+| `pnpm infra:health`              | Validate the intended PostgreSQL database and Temporal namespace.       |
+| `pnpm infra:down`                | Stop local infrastructure without deleting its data.                    |
+| `pnpm infra:reset`               | Reset only Nexus v2 local data, then recreate and verify the services.  |
+| `pnpm infra:logs`                | Print recent local infrastructure logs.                                 |
+| `pnpm dev:web`                   | Start the web development server.                                       |
+| `pnpm start:api`                 | Start the previously built API application.                             |
+| `pnpm start:worker`              | Start the previously built worker health process.                       |
+| `pnpm preview:web`               | Preview the previously built web application.                           |
+| `pnpm verify`                    | Run every current Phase 0 gate in dependency order.                     |
 
 The lint and general test gates remain explicit placeholders because their implementations belong to later bounded Phase 0 work packets. The architecture gate is real and runs both its fixture suite and repository validation through `pnpm verify`.
 
 The database governance gate also runs in `pnpm verify` without requiring live infrastructure. Live database commands require `DATABASE_URL`; use the loopback-only value in `.env.example`. See `packages/database/README.md` for connection ownership, migration authoring, rebuild safety, and drift-detection limits.
+
+The deterministic, infrastructure-independent fixture suite also runs in `pnpm verify`. PostgreSQL fixture integration is a focused live check invoked with `pnpm fixtures:test:integration`; it creates and removes only uniquely named test schemas. See `packages/testing/README.md` for fixture naming, fictional-data requirements, lifecycle guarantees, database isolation, and the Phase 1 extension rule.
 
 ## Environment configuration
 

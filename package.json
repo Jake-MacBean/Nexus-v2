@@ -24,6 +24,8 @@
     "dev:web": "pnpm --filter @nexus-v2/web dev",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "fixtures:test": "pnpm --filter @nexus-v2/testing fixtures:test",
+    "fixtures:test:integration": "pnpm --filter @nexus-v2/testing fixtures:test:integration",
     "infra:down": "node scripts/local-infra.mjs down",
     "infra:health": "node scripts/local-infra.mjs health",
     "infra:logs": "node scripts/local-infra.mjs logs",
@@ -35,7 +37,7 @@
     "start:worker": "pnpm --filter @nexus-v2/worker start",
     "test": "node -e \"console.log('Tests are scaffolded; implementation begins in a later Phase 0 packet.')\"",
     "typecheck": "pnpm exec tsc -p tsconfig.json --pretty false && pnpm --recursive --if-present typecheck",
-    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm architecture:test && pnpm architecture:check && pnpm database:governance && pnpm build"
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm fixtures:test && pnpm architecture:test && pnpm architecture:check && pnpm database:governance && pnpm build"
   },
   "devDependencies": {
     "prettier": "3.9.6",

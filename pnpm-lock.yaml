@@ -107,7 +107,15 @@ importers:
 
   packages/signal: {}
 
-  packages/testing: {}
+  packages/testing:
+    dependencies:
+      '@nexus-v2/database':
+        specifier: workspace:*
+        version: link:../database
+    devDependencies:
+      '@types/node':
+        specifier: 24.13.3
+        version: 24.13.3
 
   packages/workflows: {}
 
