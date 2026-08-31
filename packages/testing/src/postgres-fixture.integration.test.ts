@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict';
-import test from 'node:test';
+import { expect, test } from 'vitest';
 
 import { createDatabaseConnection, requireDatabaseUrl } from '@nexus-v2/database';
 
@@ -29,25 +28,24 @@ test('temporary PostgreSQL fixture state exists only within its scope', async ()
     schemaName = store.schemaName;
     await store.put('organization', fixtureOrganizationAlpha);
     await store.put('user', fixtureUserAlpha);
-    assert.equal(await schemaExists(schemaName), true);
-    assert.deepEqual(await store.read('organization'), fixtureOrganizationAlpha);
-    assert.deepEqual(await store.read('user'), fixtureUserAlpha);
+    expect(await schemaExists(schemaName)).toBe(true);
+    expect(await store.read('organization')).toEqual(fixtureOrganizationAlpha);
+    expect(await store.read('user')).toEqual(fixtureUserAlpha);
   });
-  assert.equal(await schemaExists(schemaName), false);
+  expect(await schemaExists(schemaName)).toBe(false);
 });
 
 test('temporary PostgreSQL fixture schema is removed after a failing body', async () => {
   let schemaName = '';
-  await assert.rejects(
+  await expect(
     withFixtureScope(async (scope) => {
       const store = await createPostgresFixtureStore(scope, localUrl);
       schemaName = store.schemaName;
       await store.put('failure-proof', { state: 'temporary' });
       throw new Error('simulated integration assertion failure');
     }),
-    /simulated integration assertion failure/u,
-  );
-  assert.equal(await schemaExists(schemaName), false);
+  ).rejects.toThrow(/simulated integration assertion failure/u);
+  expect(await schemaExists(schemaName)).toBe(false);
 });
 
 test('fixture teardown is safe to rerun', async () => {
@@ -55,17 +53,16 @@ test('fixture teardown is safe to rerun', async () => {
   const store = await createPostgresFixtureStore(scope, localUrl);
   await scope.teardown();
   await scope.teardown();
-  assert.equal(await schemaExists(store.schemaName), false);
+  expect(await schemaExists(store.schemaName)).toBe(false);
 });
 
 test('non-local PostgreSQL targets are rejected before fixture mutation', async () => {
   const scope = createFixtureScope();
-  await assert.rejects(
+  await expect(
     createPostgresFixtureStore(
       scope,
       'postgresql://nexus_v2_dev:nexus_v2_dev_local_only@example.invalid:55432/nexus_v2_dev',
     ),
-    /rebuild refused/u,
-  );
+  ).rejects.toThrow(/rebuild refused/u);
   await scope.teardown();
 });

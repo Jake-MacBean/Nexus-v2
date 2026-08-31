@@ -17,14 +17,15 @@
   ],
   "scripts": {
     "build": "pnpm --filter @nexus-v2/database build && tsc -p tsconfig.json --pretty false",
-    "fixtures:test": "pnpm --filter @nexus-v2/database build && tsc -p tsconfig.json --pretty false && node --test dist/fixtures.test.js",
-    "fixtures:test:integration": "pnpm --filter @nexus-v2/database build && tsc -p tsconfig.json --pretty false && node --env-file-if-exists=../../.env --test dist/postgres-fixture.integration.test.js",
+    "fixtures:test": "pnpm --filter @nexus-v2/database build && tsc -p tsconfig.json --pretty false && vitest run --config ../../vitest.config.ts --project unit-node packages/testing/src/fixtures.test.ts",
+    "fixtures:test:integration": "pnpm --filter @nexus-v2/database build && tsc -p tsconfig.json --pretty false && node --env-file-if-exists=../../.env ../../node_modules/vitest/vitest.mjs run --config ../../vitest.config.ts --project integration-node packages/testing/src/postgres-fixture.integration.test.ts",
     "typecheck": "pnpm --filter @nexus-v2/database build && tsc -p tsconfig.json --noEmit --pretty false"
   },
   "dependencies": {
     "@nexus-v2/database": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "24.13.3"
+    "@types/node": "24.13.3",
+    "vitest": "catalog:"
   }
 }

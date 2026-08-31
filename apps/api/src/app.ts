@@ -2,11 +2,12 @@ import cors from '@fastify/cors';
 import Fastify, { type FastifyInstance } from 'fastify';
 
 export interface ApiOptions {
+  logger?: boolean;
   webOrigin: string;
 }
 
-export const buildApi = async ({ webOrigin }: ApiOptions): Promise<FastifyInstance> => {
-  const app = Fastify({ logger: true });
+export const buildApi = async ({ logger, webOrigin }: ApiOptions): Promise<FastifyInstance> => {
+  const app = Fastify({ logger: logger ?? true });
 
   await app.register(cors, { origin: webOrigin });
 

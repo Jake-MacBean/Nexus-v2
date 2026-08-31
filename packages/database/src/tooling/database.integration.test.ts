@@ -1,9 +1,7 @@
 import './load-environment.js';
 
-import assert from 'node:assert/strict';
-import test from 'node:test';
-
 import { eq } from 'drizzle-orm';
+import { expect, test } from 'vitest';
 
 import { createDatabaseConnection } from '../client.js';
 import { assertLocalDatabaseUrl, requireDatabaseUrl } from '../config.js';
@@ -30,9 +28,8 @@ async function schemaSignature(): Promise<readonly string[]> {
 }
 
 test('configuration failures are explicit', () => {
-  assert.throws(() => requireDatabaseUrl({}), /DATABASE_URL is required/u);
-  assert.throws(
-    () => assertLocalDatabaseUrl('postgresql://example.invalid/production'),
+  expect(() => requireDatabaseUrl({})).toThrow(/DATABASE_URL is required/u);
+  expect(() => assertLocalDatabaseUrl('postgresql://example.invalid/production')).toThrow(
     /rebuild refused/u,
   );
 });
@@ -42,7 +39,7 @@ test('unavailable database connections fail clearly', async () => {
     connectionString: 'postgresql://nexus_v2_dev:invalid@127.0.0.1:1/nexus_v2_dev',
     connectionTimeoutMillis: 250,
   });
-  await assert.rejects(connection.pool.query('SELECT 1'));
+  await expect(connection.pool.query('SELECT 1')).rejects.toThrow();
   await connection.close();
 });
 
@@ -54,11 +51,11 @@ test('clean database migration lifecycle is repeatable', async () => {
     const absent = await connection.pool.query<{ exists: boolean }>(
       "SELECT to_regclass('public.nexus_platform_metadata') IS NOT NULL AS exists",
     );
-    assert.equal(absent.rows[0]?.exists, false);
+    expect(absent.rows[0]?.exists).toBe(false);
 
     await applyMigrations(connection);
     const firstStatus = await readMigrationStatus(connection);
-    assert.deepEqual(firstStatus, { applied: 1, expected: 1, pending: 0, upToDate: true });
+    expect(firstStatus).toEqual({ applied: 1, expected: 1, pending: 0, upToDate: true });
 
     const columns = await connection.pool.query<{ columnName: string; isNullable: string }>(
       `SELECT column_name AS "columnName", is_nullable AS "isNullable"
@@ -66,15 +63,12 @@ test('clean database migration lifecycle is repeatable', async () => {
        WHERE table_schema = 'public' AND table_name = 'nexus_platform_metadata'
        ORDER BY ordinal_position`,
     );
-    assert.deepEqual(
-      columns.rows.map(({ columnName, isNullable }) => [columnName, isNullable]),
-      [
-        ['key', 'NO'],
-        ['value', 'NO'],
-        ['created_at', 'NO'],
-        ['updated_at', 'NO'],
-      ],
-    );
+    expect(columns.rows.map(({ columnName, isNullable }) => [columnName, isNullable])).toEqual([
+      ['key', 'NO'],
+      ['value', 'NO'],
+      ['created_at', 'NO'],
+      ['updated_at', 'NO'],
+    ]);
     const primaryKey = await connection.pool.query<{ columnName: string }>(
       `SELECT attribute.attname AS "columnName"
        FROM pg_constraint AS constraint_definition
@@ -87,7 +81,7 @@ test('clean database migration lifecycle is repeatable', async () => {
          AND relation.relname = 'nexus_platform_metadata'
          AND constraint_definition.contype = 'p'`,
     );
-    assert.deepEqual(primaryKey.rows, [{ columnName: 'key' }]);
+    expect(primaryKey.rows).toEqual([{ columnName: 'key' }]);
 
     await connection.db.insert(nexusPlatformMetadata).values({
       key: 'phase-0-integration-test',
@@ -97,10 +91,10 @@ test('clean database migration lifecycle is repeatable', async () => {
       .select({ key: nexusPlatformMetadata.key, value: nexusPlatformMetadata.value })
       .from(nexusPlatformMetadata)
       .where(eq(nexusPlatformMetadata.key, 'phase-0-integration-test'));
-    assert.deepEqual(readBack, [{ key: 'phase-0-integration-test', value: 'ok' }]);
+    expect(readBack).toEqual([{ key: 'phase-0-integration-test', value: 'ok' }]);
 
     await applyMigrations(connection);
-    assert.deepEqual(await readMigrationStatus(connection), firstStatus);
+    expect(await readMigrationStatus(connection)).toEqual(firstStatus);
     await connection.db
       .delete(nexusPlatformMetadata)
       .where(eq(nexusPlatformMetadata.key, 'phase-0-integration-test'));
@@ -109,12 +103,12 @@ test('clean database migration lifecycle is repeatable', async () => {
   }
 
   const firstSignature = await schemaSignature();
-  assert.equal(firstSignature.length, 4);
+  expect(firstSignature).toHaveLength(4);
   await rebuildLocalDatabase(localUrl);
   connection = createDatabaseConnection({ connectionString: localUrl });
   try {
     await applyMigrations(connection);
-    assert.deepEqual(await readMigrationStatus(connection), {
+    expect(await readMigrationStatus(connection)).toEqual({
       applied: 1,
       expected: 1,
       pending: 0,
@@ -123,5 +117,5 @@ test('clean database migration lifecycle is repeatable', async () => {
   } finally {
     await connection.close();
   }
-  assert.deepEqual(await schemaSignature(), firstSignature);
+  expect(await schemaSignature()).toEqual(firstSignature);
 });

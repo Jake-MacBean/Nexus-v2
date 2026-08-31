@@ -2,6 +2,7 @@
   "name": "@nexus-v2/root",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "description": "Nexus v2 Phase 0 Engineering Harness",
   "license": "UNLICENSED",
   "engines": {
@@ -24,8 +25,8 @@
     "dev:web": "pnpm --filter @nexus-v2/web dev",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "fixtures:test": "pnpm --filter @nexus-v2/testing fixtures:test",
-    "fixtures:test:integration": "pnpm --filter @nexus-v2/testing fixtures:test:integration",
+    "fixtures:test": "vitest run --project unit-node packages/testing/src/fixtures.test.ts",
+    "fixtures:test:integration": "pnpm --filter @nexus-v2/database build && node --env-file-if-exists=.env node_modules/vitest/vitest.mjs run --project integration-node packages/testing/src/postgres-fixture.integration.test.ts",
     "infra:down": "node scripts/local-infra.mjs down",
     "infra:health": "node scripts/local-infra.mjs health",
     "infra:logs": "node scripts/local-infra.mjs logs",
@@ -35,12 +36,18 @@
     "preview:web": "pnpm --filter @nexus-v2/web preview",
     "start:api": "pnpm --filter @nexus-v2/api start",
     "start:worker": "pnpm --filter @nexus-v2/worker start",
-    "test": "node -e \"console.log('Tests are scaffolded; implementation begins in a later Phase 0 packet.')\"",
+    "test": "vitest run --project unit-node --project unit-web",
+    "test:coverage": "vitest run --project unit-node --project unit-web --coverage",
+    "test:integration": "pnpm --filter @nexus-v2/database build && node --env-file-if-exists=.env node_modules/vitest/vitest.mjs run --project integration-node",
+    "test:unit": "vitest run --project unit-node --project unit-web",
     "typecheck": "pnpm exec tsc -p tsconfig.json --pretty false && pnpm --recursive --if-present typecheck",
-    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm fixtures:test && pnpm architecture:test && pnpm architecture:check && pnpm database:governance && pnpm build"
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm architecture:test && pnpm architecture:check && pnpm database:governance && pnpm build"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "catalog:",
+    "jsdom": "catalog:",
     "prettier": "3.9.6",
-    "typescript": "7.0.2"
+    "typescript": "7.0.2",
+    "vitest": "catalog:"
   }
 }

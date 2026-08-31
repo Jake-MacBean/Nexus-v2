@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 
-type WorkerState = 'starting' | 'ready' | 'stopping';
+import { workerHealthResponse, type WorkerState } from './health.js';
 
 const host = process.env.WORKER_HEALTH_HOST ?? '127.0.0.1';
 const port = Number.parseInt(process.env.WORKER_HEALTH_PORT ?? '3001', 10);
@@ -14,8 +14,9 @@ const startedAt = new Date().toISOString();
 
 const healthServer = createServer((request, response) => {
   if (request.method === 'GET' && request.url === '/health') {
-    response.writeHead(state === 'ready' ? 200 : 503, { 'content-type': 'application/json' });
-    response.end(JSON.stringify({ service: 'worker', startedAt, status: state }));
+    const health = workerHealthResponse(state, startedAt);
+    response.writeHead(health.statusCode, { 'content-type': 'application/json' });
+    response.end(JSON.stringify(health.body));
     return;
   }
 

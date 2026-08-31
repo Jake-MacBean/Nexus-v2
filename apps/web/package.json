@@ -14,8 +14,11 @@
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@testing-library/dom": "catalog:",
+    "@testing-library/react": "catalog:",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.5",
-    "vite": "8.2.2"
+    "vite": "8.2.2",
+    "vitest": "catalog:"
   }
 }

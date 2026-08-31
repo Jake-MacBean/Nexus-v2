@@ -4,9 +4,9 @@ Nexus v2 is being built as a clean, TypeScript-first platform. This repository c
 
 ## Current work packet
 
-`P0.04-T02 - Create deterministic fixture and seeding conventions`
+`P0.05-T01 - Implement the standardized Nexus unit and integration test harness`
 
-The repository contains minimal smoke-only deployable applications, explicit package boundaries, a repeatable PostgreSQL/Drizzle migration harness, and deterministic test-only fixture conventions. No Nexus business schema or behavior has been introduced.
+The repository contains minimal smoke-only deployable applications, explicit package boundaries, a repeatable PostgreSQL/Drizzle migration harness, deterministic fixtures, and a standardized Vitest correctness harness. No Nexus business schema or behavior has been introduced.
 
 ## Prerequisites
 
@@ -35,7 +35,10 @@ For the initial checkout, before a lockfile exists, use `pnpm install`. The comm
 | `pnpm build`                     | Build/type-check the currently scaffolded TypeScript project graph.     |
 | `pnpm typecheck`                 | Run the strict TypeScript compiler without emitting files.              |
 | `pnpm lint`                      | Run the lint gate. The implementation is intentionally deferred in T01. |
-| `pnpm test`                      | Run the test gate. The implementation is intentionally deferred in T01. |
+| `pnpm test`                      | Run the fast Node and jsdom unit test projects.                         |
+| `pnpm test:unit`                 | Explicit alias for the fast unit test suite.                            |
+| `pnpm test:integration`          | Run serialized tests against recognized local PostgreSQL.               |
+| `pnpm test:coverage`             | Run unit tests with text, JSON, HTML, and LCOV coverage.                |
 | `pnpm architecture:check`        | Validate the real workspace source and manifest dependency graph.       |
 | `pnpm architecture:test`         | Run positive and negative fixture tests for the architecture checker.   |
 | `pnpm database:governance`       | Validate committed migration artifacts and prohibit schema push.        |
@@ -60,11 +63,11 @@ For the initial checkout, before a lockfile exists, use `pnpm install`. The comm
 | `pnpm preview:web`               | Preview the previously built web application.                           |
 | `pnpm verify`                    | Run every current Phase 0 gate in dependency order.                     |
 
-The lint and general test gates remain explicit placeholders because their implementations belong to later bounded Phase 0 work packets. The architecture gate is real and runs both its fixture suite and repository validation through `pnpm verify`.
+The lint gate remains an explicit placeholder because its implementation belongs to a later bounded Phase 0 work packet. The Vitest unit gate and architecture gate are real and run through `pnpm verify` without requiring Docker.
 
 The database governance gate also runs in `pnpm verify` without requiring live infrastructure. Live database commands require `DATABASE_URL`; use the loopback-only value in `.env.example`. See `packages/database/README.md` for connection ownership, migration authoring, rebuild safety, and drift-detection limits.
 
-The deterministic, infrastructure-independent fixture suite also runs in `pnpm verify`. PostgreSQL fixture integration is a focused live check invoked with `pnpm fixtures:test:integration`; it creates and removes only uniquely named test schemas. See `packages/testing/README.md` for fixture naming, fictional-data requirements, lifecycle guarantees, database isolation, and the Phase 1 extension rule.
+Vitest is the standard runner for TypeScript/React unit and integration tests. Unit tests are fast and infrastructure-independent; integration tests are explicit and currently use recognized local PostgreSQL only. Evaluation tests are reserved for P0.05-T02 and excluded from both suites. See `docs/testing.md` for naming, environments, network isolation, fixtures, coverage, cleanup, and test-writing rules.
 
 ## Environment configuration
 

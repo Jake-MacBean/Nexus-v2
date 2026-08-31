@@ -2,6 +2,8 @@
 
 Status: Phase 0 deterministic fixture harness. Everything exported here is test-only support, never production seed data or a canonical Nexus model.
 
+Vitest is the repository's canonical TypeScript/React runner. This package remains the sole shared fixture system; it does not own runner configuration or duplicate test setup. See `docs/testing.md` at the repository root for unit/integration/evaluation discovery, Node/jsdom environments, network isolation, commands, and coverage.
+
 ## Fixture inventory
 
 - `fixtureOrganizationAlpha`: stable organization-shaped test descriptor using `organization-alpha.example.test`.
