@@ -13,10 +13,27 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "drizzle"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json --pretty false",
+    "db:check": "drizzle-kit check --config=drizzle.config.ts",
+    "db:generate": "drizzle-kit generate --config=drizzle.config.ts",
+    "db:migrate": "tsc -p tsconfig.json --pretty false && node dist/tooling/database-cli.js migrate",
+    "db:rebuild": "tsc -p tsconfig.json --pretty false && node dist/tooling/database-cli.js rebuild",
+    "db:status": "tsc -p tsconfig.json --pretty false && node dist/tooling/database-cli.js status",
+    "db:test:integration": "tsc -p tsconfig.json --pretty false && node --test dist/tooling/database.integration.test.js",
     "typecheck": "tsc -p tsconfig.json --noEmit --pretty false"
+  },
+  "dependencies": {
+    "drizzle-orm": "0.45.2",
+    "pg": "8.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "@types/pg": "8.23.1",
+    "dotenv": "17.4.2",
+    "drizzle-kit": "0.31.10"
   }
 }

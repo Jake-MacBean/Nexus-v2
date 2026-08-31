@@ -191,6 +191,12 @@ function up() {
   health();
 }
 
+function postgresUp() {
+  requireDocker();
+  runCompose(['up', '--detach', '--wait', '--wait-timeout', '180', 'postgres']);
+  checkPostgres();
+}
+
 function down() {
   requireDocker();
   runCompose(['down', '--remove-orphans']);
@@ -253,11 +259,11 @@ function logs() {
   runCompose(['logs', '--tail', '200']);
 }
 
-const actions = { down, health, logs, reset, up };
+const actions = { down, health, logs, 'postgres-up': postgresUp, reset, up };
 const action = process.argv[2];
 
 if (!Object.hasOwn(actions, action)) {
-  console.error('Usage: node scripts/local-infra.mjs <up|down|health|reset|logs>');
+  console.error('Usage: node scripts/local-infra.mjs <up|postgres-up|down|health|reset|logs>');
   process.exitCode = 2;
 } else {
   try {

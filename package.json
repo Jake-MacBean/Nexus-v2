@@ -13,6 +13,14 @@
     "architecture:check": "node architecture/check.mjs",
     "architecture:test": "node --test architecture/checker.test.mjs",
     "build": "pnpm exec tsc -p tsconfig.json --pretty false && pnpm --recursive --if-present build",
+    "database:governance": "node scripts/check-database-governance.mjs",
+    "db:check": "pnpm database:governance && pnpm --filter @nexus-v2/database db:check",
+    "db:generate": "pnpm --filter @nexus-v2/database db:generate",
+    "db:local:up": "node scripts/local-infra.mjs postgres-up",
+    "db:migrate": "pnpm --filter @nexus-v2/database db:migrate",
+    "db:rebuild": "pnpm --filter @nexus-v2/database db:rebuild",
+    "db:status": "pnpm --filter @nexus-v2/database db:status",
+    "db:test:integration": "pnpm --filter @nexus-v2/database db:test:integration",
     "dev:web": "pnpm --filter @nexus-v2/web dev",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -27,7 +35,7 @@
     "start:worker": "pnpm --filter @nexus-v2/worker start",
     "test": "node -e \"console.log('Tests are scaffolded; implementation begins in a later Phase 0 packet.')\"",
     "typecheck": "pnpm exec tsc -p tsconfig.json --pretty false && pnpm --recursive --if-present typecheck",
-    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm architecture:test && pnpm architecture:check && pnpm build"
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm architecture:test && pnpm architecture:check && pnpm database:governance && pnpm build"
   },
   "devDependencies": {
     "prettier": "3.9.6",
