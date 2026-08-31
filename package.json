@@ -13,7 +13,11 @@
   "scripts": {
     "architecture:check": "node architecture/check.mjs",
     "architecture:test": "node --test architecture/checker.test.mjs",
-    "build": "pnpm exec tsc -p tsconfig.json --pretty false && pnpm eval:typecheck && pnpm --recursive --if-present build",
+    "build": "pnpm exec tsc -p tsconfig.json --pretty false && pnpm eval:typecheck && pnpm contracts:typecheck && pnpm --recursive --if-present build",
+    "contracts:check": "node architecture/contracts/cli.ts check",
+    "contracts:list": "node architecture/contracts/cli.ts list",
+    "contracts:test": "vitest run --project contract-framework",
+    "contracts:typecheck": "pnpm exec tsc -p architecture/contracts/tsconfig.json --noEmit --pretty false",
     "database:governance": "node scripts/check-database-governance.mjs",
     "db:check": "pnpm database:governance && pnpm --filter @nexus-v2/database db:check",
     "db:generate": "pnpm --filter @nexus-v2/database db:generate",
@@ -46,8 +50,8 @@
     "test:coverage": "vitest run --project unit-node --project unit-web --coverage",
     "test:integration": "pnpm --filter @nexus-v2/database build && node --env-file-if-exists=.env node_modules/vitest/vitest.mjs run --project integration-node",
     "test:unit": "vitest run --project unit-node --project unit-web",
-    "typecheck": "pnpm exec tsc -p tsconfig.json --pretty false && pnpm eval:typecheck && pnpm --recursive --if-present typecheck",
-    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm eval:self && pnpm architecture:test && pnpm architecture:check && pnpm database:governance && pnpm build"
+    "typecheck": "pnpm exec tsc -p tsconfig.json --pretty false && pnpm eval:typecheck && pnpm contracts:typecheck && pnpm --recursive --if-present typecheck",
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm eval:self && pnpm contracts:check && pnpm contracts:test && pnpm architecture:test && pnpm architecture:check && pnpm database:governance && pnpm build"
   },
   "devDependencies": {
     "@types/node": "24.13.3",

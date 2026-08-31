@@ -4,9 +4,9 @@ Nexus v2 is being built as a clean, TypeScript-first platform. This repository c
 
 ## Current work packet
 
-`P0.05-T02 - Implement the Nexus evaluation harness`
+`P0.06-T01 - Create the Nexus architecture contract-test framework`
 
-The repository contains minimal smoke-only deployable applications, explicit package boundaries, a repeatable PostgreSQL/Drizzle migration harness, deterministic fixtures, a standardized Vitest correctness harness, and a provider-free evaluation system. Planned evaluations document future expectations without claiming that unbuilt Nexus capabilities pass. No Nexus business schema or behavior has been introduced.
+The repository contains minimal smoke-only deployable applications, explicit package boundaries, a repeatable PostgreSQL/Drizzle migration harness, deterministic fixtures, a standardized Vitest correctness harness, a provider-free evaluation system, and a machine-readable Architecture Contract registry. Planned contracts and evaluations remain visibly unimplemented rather than appearing as passing behavior. No Nexus business schema or behavior has been introduced.
 
 ## Prerequisites
 
@@ -44,6 +44,10 @@ For the initial checkout, before a lockfile exists, use `pnpm install`. The comm
 | `pnpm eval:list`                 | List every scenario, category, version, and implementation status.      |
 | `pnpm eval:report`               | Run the catalog and write an ignored structured JSON report.            |
 | `pnpm eval:baseline`             | Prove synthetic regression and improvement comparison mechanics.        |
+| `pnpm contracts:list`            | List all 25 contracts, owners, phases, and channel statuses.            |
+| `pnpm contracts:list --json`     | Emit deterministic machine-readable contract status.                    |
+| `pnpm contracts:check`           | Validate registry completeness, metadata, and evidence references.      |
+| `pnpm contracts:test`            | Run contract-framework and current explicit contract tests.             |
 | `pnpm architecture:check`        | Validate the real workspace source and manifest dependency graph.       |
 | `pnpm architecture:test`         | Run positive and negative fixture tests for the architecture checker.   |
 | `pnpm database:governance`       | Validate committed migration artifacts and prohibit schema push.        |
@@ -73,6 +77,8 @@ The lint gate remains an explicit placeholder because its implementation belongs
 The database governance gate also runs in `pnpm verify` without requiring live infrastructure. Live database commands require `DATABASE_URL`; use the loopback-only value in `.env.example`. See `packages/database/README.md` for connection ownership, migration authoring, rebuild safety, and drift-detection limits.
 
 Vitest is the standard runner for TypeScript/React unit and integration tests. Unit tests are fast and infrastructure-independent; integration tests are explicit and currently use recognized local PostgreSQL only. Evaluation-harness tests remain explicitly discovered through `pnpm eval:self` and excluded from both correctness suites. See `docs/testing.md` for correctness-test rules and `evaluations/README.md` for evaluation scenarios, outcomes, baselines, governance, and provider-cost isolation.
+
+The canonical Architecture Contract index is `docs/architecture/contracts.registry.json`. Run `pnpm contracts:list` to see exactly which contracts are partial, planned, not yet executable, or enforced. See `docs/architecture/README.md` for evidence rules, phase/owner semantics, contract-test conventions, and governance.
 
 ## Environment configuration
 

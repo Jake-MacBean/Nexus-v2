@@ -44,3 +44,9 @@ These checks enforce dependency structure. Semantic rules—such as whether a
 small neutral package has accumulated feature behavior or whether code is truly
 business audit rather than technical telemetry—still require code review and
 future purpose-built static rules because imports alone cannot prove intent.
+
+The Architecture Contract framework complements these dependency checks with a
+machine-readable AC-001 through AC-025 registry, explicit owners, phase
+applicability, and honest static/runtime/evaluation/review evidence states. See
+`docs/architecture/README.md` for the governance and contribution workflow, and
+run `pnpm contracts:list` to inspect current coverage.

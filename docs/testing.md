@@ -11,8 +11,9 @@ Repository bootstrap/tooling written in JavaScript or MJS may continue to use No
 | Unit        | `*.test.ts`, `*.test.tsx`                         | Node for API/worker/packages; jsdom for web | Yes                    | None                        |
 | Integration | `*.integration.test.ts`, `*.integration.test.tsx` | Node                                        | No                     | Explicit local dependencies |
 | Evaluation  | `*.eval.test.ts`, `*.eval.test.tsx`               | Explicit evaluation-harness Vitest project  | Harness self-test only | None in Phase 0             |
+| Contract    | `*.contract.test.ts`, `*.contract.test.tsx`       | Explicit contract-framework Vitest project  | Yes                    | None                        |
 
-Unit projects explicitly exclude integration and evaluation names. The integration project includes only integration names and excludes evaluation names. Evaluation-harness tests run only through the explicit `eval-harness` project and remain provider-free. Do not add model calls or model mocks to the correctness categories.
+Unit projects explicitly exclude integration, evaluation, and contract names. The integration project includes only integration names and excludes evaluation and contract names. Evaluation-harness tests run only through the explicit `eval-harness` project and remain provider-free. Architecture contract tests run only through the explicit `contract-framework` project and remain provider-free. Do not add model calls or model mocks to the correctness categories.
 
 New unit tests under `apps/api/src`, `apps/worker/src`, `apps/web/src`, or any `packages/*/src` workspace join the appropriate suite automatically. Empty packages need no placeholder tests. Put a test beside its production module; put reusable fixture builders/fakes in `packages/testing`; keep repository-tooling tests beside their tooling.
 
@@ -25,6 +26,7 @@ pnpm test:coverage        # unit suite plus text/JSON/HTML/LCOV coverage
 pnpm verify               # all fast repository gates, including unit tests
 pnpm eval:self            # synthetic provider-free evaluation-harness proofs
 pnpm eval                 # planned product evaluation catalog
+pnpm contracts:test      # architecture contract-framework proofs
 
 pnpm db:local:up          # start PostgreSQL only
 pnpm test:integration     # all current integration suites
@@ -42,6 +44,7 @@ The root `vitest.config.ts` uses Vitest's supported `projects` mechanism:
 - `unit-node`: API, worker, and package tests in the Node environment.
 - `unit-web`: React tests in jsdom without launching a browser.
 - `integration-node`: controlled local integration tests, serialized by file for current database-reset safety.
+- `contract-framework`: architecture contract registry and framework tests in the Node environment.
 
 API route tests use Fastify `inject()` and never bind a TCP port. React tests use Testing Library and stub adapters such as API health rather than changing the UI or opening a browser. Worker logic should expose small lifecycle/health functions that can be tested without leaving a server or process running.
 

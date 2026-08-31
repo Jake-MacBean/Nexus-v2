@@ -1,0 +1,1027 @@
+{
+  "schemaVersion": 1,
+  "canonicalSource": {
+    "title": "Nexus v2 Architecture Contracts",
+    "version": "1.0",
+    "reference": "External controlling artifact: Nexus v2 Architecture Contracts v1.0 (30 August 2026)",
+    "normative": true
+  },
+  "phases": [
+    { "id": "phase-0", "title": "Engineering Harness" },
+    { "id": "phase-1", "title": "Business Kernel" },
+    { "id": "phase-2", "title": "Alex and Workspace Runtime" },
+    { "id": "phase-3", "title": "Relationship and Execution Loop" },
+    { "id": "phase-4", "title": "Commercial-to-Cash Loop" },
+    { "id": "phase-5", "title": "Marketing and Organizational Intelligence" },
+    { "id": "phase-6", "title": "External Interfaces, Migration, and Hardening" },
+    { "id": "phase-7", "title": "Integrated Private Alpha and Beta" }
+  ],
+  "evidenceCatalog": [
+    {
+      "id": "architecture-policy",
+      "kind": "path",
+      "reference": "architecture/policy.mjs",
+      "description": "Registered workspace ownership and dependency allow-lists."
+    },
+    {
+      "id": "architecture-checker",
+      "kind": "path",
+      "reference": "architecture/checker.mjs",
+      "description": "Deterministic workspace/import/public-boundary validation."
+    },
+    {
+      "id": "architecture-checker-tests",
+      "kind": "path",
+      "reference": "architecture/checker.test.mjs",
+      "description": "Positive and negative architecture-checker proofs."
+    },
+    {
+      "id": "architecture-check-command",
+      "kind": "command",
+      "reference": "architecture:check",
+      "description": "Root command validating the real workspace graph."
+    },
+    {
+      "id": "architecture-test-command",
+      "kind": "command",
+      "reference": "architecture:test",
+      "description": "Root command exercising architecture checker fixtures."
+    },
+    {
+      "id": "verify-command",
+      "kind": "command",
+      "reference": "verify",
+      "description": "Docker-free repository verification gate."
+    },
+    {
+      "id": "contracts-check-command",
+      "kind": "command",
+      "reference": "contracts:check",
+      "description": "Canonical registry completeness and evidence validation."
+    },
+    {
+      "id": "contracts-test-command",
+      "kind": "command",
+      "reference": "contracts:test",
+      "description": "Contract-framework self-tests and future explicit contract tests."
+    },
+    {
+      "id": "architecture-governance-guide",
+      "kind": "path",
+      "reference": "docs/architecture/README.md",
+      "description": "Architecture-contract governance, review, and extension rules."
+    },
+    {
+      "id": "repository-guide",
+      "kind": "path",
+      "reference": "README.md",
+      "description": "Repository ownership, commands, setup, and package topology."
+    },
+    {
+      "id": "architecture-guide",
+      "kind": "path",
+      "reference": "architecture/README.md",
+      "description": "Encoded dependency model and remediation guidance."
+    },
+    {
+      "id": "database-governance-script",
+      "kind": "path",
+      "reference": "scripts/check-database-governance.mjs",
+      "description": "Committed migration consistency and schema-push prohibition."
+    },
+    {
+      "id": "database-governance-command",
+      "kind": "command",
+      "reference": "database:governance",
+      "description": "Root deterministic database governance gate."
+    },
+    {
+      "id": "database-integration-test",
+      "kind": "path",
+      "reference": "packages/database/src/tooling/database.integration.test.ts",
+      "description": "Strictly local repeatable migration lifecycle proof."
+    },
+    {
+      "id": "database-integration-command",
+      "kind": "command",
+      "reference": "db:test:integration",
+      "description": "Focused local migration integration command."
+    },
+    {
+      "id": "database-local-target-safety",
+      "kind": "path",
+      "reference": "packages/database/src/config.ts",
+      "description": "Local-only destructive database target validation."
+    },
+    {
+      "id": "local-infrastructure-safety",
+      "kind": "path",
+      "reference": "scripts/local-infra.mjs",
+      "description": "Allow-listed local infrastructure lifecycle behavior."
+    },
+    {
+      "id": "environment-example",
+      "kind": "path",
+      "reference": ".env.example",
+      "description": "Documented non-secret local environment defaults."
+    },
+    {
+      "id": "secret-ignore-policy",
+      "kind": "path",
+      "reference": ".gitignore",
+      "description": "Local environment and credential-file exclusions."
+    },
+    {
+      "id": "fixture-safety",
+      "kind": "path",
+      "reference": "packages/testing/src/safety.ts",
+      "description": "Fictional fixture-domain and secret-shaped data rejection."
+    },
+    {
+      "id": "fixture-safety-tests",
+      "kind": "path",
+      "reference": "packages/testing/src/fixtures.test.ts",
+      "description": "Deterministic fixture identity, safety, and cleanup proofs."
+    },
+    {
+      "id": "unit-network-safety",
+      "kind": "path",
+      "reference": "testing/setup/network.ts",
+      "description": "Default rejection of unexpected unit-test fetch calls."
+    },
+    {
+      "id": "testing-guide",
+      "kind": "path",
+      "reference": "docs/testing.md",
+      "description": "Canonical correctness-test commands and isolation rules."
+    },
+    {
+      "id": "ai-boundary-guide",
+      "kind": "path",
+      "reference": "packages/ai/README.md",
+      "description": "AI adapter ownership and prohibited business behavior."
+    },
+    {
+      "id": "integrations-boundary-guide",
+      "kind": "path",
+      "reference": "packages/integrations/README.md",
+      "description": "Provider adapter ownership and normalization boundary."
+    },
+    {
+      "id": "audit-boundary-guide",
+      "kind": "path",
+      "reference": "packages/audit/README.md",
+      "description": "Business audit ownership boundary."
+    },
+    {
+      "id": "observability-boundary-guide",
+      "kind": "path",
+      "reference": "packages/observability/README.md",
+      "description": "Technical observability ownership boundary."
+    },
+    {
+      "id": "evaluation-guide",
+      "kind": "path",
+      "reference": "evaluations/README.md",
+      "description": "Evaluation governance and provider/cost separation."
+    },
+    {
+      "id": "evaluation-harness-tests",
+      "kind": "path",
+      "reference": "evaluations/harness.eval.test.ts",
+      "description": "Provider-free evaluation mechanics and reporting proofs."
+    },
+    {
+      "id": "evaluation-cost-metadata",
+      "kind": "path",
+      "reference": "evaluations/runners/run.ts",
+      "description": "Structured provider-call and estimated-cost report metadata."
+    },
+    {
+      "id": "eval-capability-selection",
+      "kind": "evaluation",
+      "reference": "capability-selection.complete-task",
+      "description": "Planned canonical capability-selection scenario."
+    },
+    {
+      "id": "eval-authority",
+      "kind": "evaluation",
+      "reference": "authority.material-pricing-change",
+      "description": "Planned material-action authority scenario."
+    },
+    {
+      "id": "eval-truth-hierarchy",
+      "kind": "evaluation",
+      "reference": "truth-hierarchy.invoice-paid",
+      "description": "Planned canonical-truth-versus-memory conflict scenario."
+    },
+    {
+      "id": "eval-prompt-injection",
+      "kind": "evaluation",
+      "reference": "prompt-injection.document-payment",
+      "description": "Planned open-world-content authority safety scenario."
+    },
+    {
+      "id": "eval-duplicate-side-effect",
+      "kind": "evaluation",
+      "reference": "duplicate-side-effects.reconcile-timeout",
+      "description": "Planned timeout/reconciliation scenario."
+    },
+    {
+      "id": "eval-financial-grounding",
+      "kind": "evaluation",
+      "reference": "financial-reasoning.incomplete-evidence",
+      "description": "Planned incomplete-context grounding scenario."
+    },
+    {
+      "id": "eval-cross-domain-synthesis",
+      "kind": "evaluation",
+      "reference": "cross-domain-synthesis.client-risk",
+      "description": "Planned provenance-preserving cross-domain scenario."
+    },
+    {
+      "id": "eval-workspace-composition",
+      "kind": "evaluation",
+      "reference": "workspace-composition.risky-client",
+      "description": "Planned structured Workspace Specification scenario."
+    },
+    {
+      "id": "eval-attention",
+      "kind": "evaluation",
+      "reference": "attention-interruption.batch-low-materiality",
+      "description": "Planned attention batching and suppression scenario."
+    }
+  ],
+  "contracts": [
+    {
+      "id": "AC-001",
+      "title": "Organization and Tenancy Boundary",
+      "owner": { "kind": "cross-cutting", "boundary": "organization/tenancy" },
+      "primaryPhases": ["phase-1", "phase-3", "phase-4", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Tenant-bearing records and organization-context analyzers do not exist."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No canonical tenant-scoped business records or execution paths exist."
+        },
+        "eval": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No tenancy evaluation target exists."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["architecture-governance-guide"],
+          "reason": "Manual schema and context review is required until purpose-built checks exist."
+        }
+      }
+    },
+    {
+      "id": "AC-002",
+      "title": "Canonical Identity and Domain Ownership",
+      "owner": { "kind": "architecture-governed", "boundary": "domain-ownership" },
+      "primaryPhases": ["phase-1", "phase-3", "phase-4", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "partial",
+          "evidence": [
+            "architecture-policy",
+            "architecture-checker",
+            "architecture-check-command",
+            "repository-guide"
+          ],
+          "reason": "Workspace ownership and domain dependency direction are checked; canonical object identity and schema ownership are not yet executable."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "Production domain identities and ownership schemas do not exist."
+        },
+        "eval": {
+          "status": "planned",
+          "evidence": ["eval-cross-domain-synthesis"],
+          "reason": "The planned synthesis scenario prohibits duplicating canonical facts but has no executable target."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["architecture-governance-guide", "repository-guide"],
+          "reason": "Package ownership is reviewable; future object ownership still requires schema review."
+        }
+      }
+    },
+    {
+      "id": "AC-003",
+      "title": "Commands and Queries Are Canonical Application Capabilities",
+      "owner": { "kind": "subsystem", "boundary": "application" },
+      "primaryPhases": ["phase-1", "phase-3", "phase-4", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "partial",
+          "evidence": [
+            "architecture-policy",
+            "architecture-checker",
+            "architecture-checker-tests",
+            "architecture-check-command"
+          ],
+          "reason": "Import and package boundaries constrain adapters, but static checks cannot prove arbitrary handler semantics."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No business Commands or Queries exist."
+        },
+        "eval": {
+          "status": "planned",
+          "evidence": ["eval-capability-selection"],
+          "reason": "Canonical capability selection is defined but its target is not implemented."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["architecture-guide", "architecture-governance-guide"],
+          "reason": "Adapter thinness and business-logic placement still require semantic review."
+        }
+      }
+    },
+    {
+      "id": "AC-004",
+      "title": "Central Authority Enforcement",
+      "owner": { "kind": "subsystem", "boundary": "authority" },
+      "primaryPhases": [
+        "phase-1",
+        "phase-2",
+        "phase-3",
+        "phase-4",
+        "phase-5",
+        "phase-6",
+        "phase-7"
+      ],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Authority adapter parity and bypass checks await the Authority Engine."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "The Authority Engine and consequential actions do not exist."
+        },
+        "eval": {
+          "status": "planned",
+          "evidence": ["eval-authority", "eval-prompt-injection"],
+          "reason": "Authority and untrusted-content scenarios are registered but not executable."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["architecture-governance-guide"],
+          "reason": "Every future consequential action requires manual authority-boundary review until runtime parity tests exist."
+        }
+      }
+    },
+    {
+      "id": "AC-005",
+      "title": "Consequential Decisions and Actions Are Reconstructable",
+      "owner": { "kind": "subsystem", "boundary": "audit" },
+      "primaryPhases": ["phase-1", "phase-3", "phase-4", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Audit schemas and mutation restrictions do not exist."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No consequential business decisions or append-only audit store exist."
+        },
+        "eval": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No reconstructability evaluation target exists."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["audit-boundary-guide", "architecture-governance-guide"],
+          "reason": "Audit ownership is documented; record completeness requires future schema and behavior review."
+        }
+      }
+    },
+    {
+      "id": "AC-006",
+      "title": "Business Events Are Durable and Transactional",
+      "owner": { "kind": "subsystem", "boundary": "events" },
+      "primaryPhases": ["phase-1", "phase-3", "phase-4", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Outbox schema and publish-boundary checks do not exist."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No business events or transactional outbox exist."
+        },
+        "eval": {
+          "status": "not_applicable",
+          "evidence": [],
+          "reason": "Durability is primarily a deterministic runtime contract, not a judgment evaluation."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["architecture-governance-guide"],
+          "reason": "Future event-producing changes require transactional-boundary review."
+        }
+      }
+    },
+    {
+      "id": "AC-007",
+      "title": "Workflows Own Durable Execution State",
+      "owner": { "kind": "subsystem", "boundary": "workflows" },
+      "primaryPhases": ["phase-1", "phase-3", "phase-4", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Workflow-state ownership checks await workflow definitions."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "Temporal is scaffolded locally, but no Nexus workflow exists."
+        },
+        "eval": {
+          "status": "not_applicable",
+          "evidence": [],
+          "reason": "Restart and recovery are deterministic runtime concerns."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["architecture-governance-guide", "repository-guide"],
+          "reason": "Workflow versus canonical-state ownership is documented and remains a manual review gate."
+        }
+      }
+    },
+    {
+      "id": "AC-008",
+      "title": "External Side Effects Are Idempotent and Reconcilable",
+      "owner": { "kind": "cross-cutting", "boundary": "integrations/workflows" },
+      "primaryPhases": ["phase-1", "phase-3", "phase-4", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Action Intent and idempotency metadata checks await side-effect implementations."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No consequential external action exists."
+        },
+        "eval": {
+          "status": "planned",
+          "evidence": ["eval-duplicate-side-effect"],
+          "reason": "Timeout/reconciliation expectations are registered but not executable."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["integrations-boundary-guide", "architecture-governance-guide"],
+          "reason": "Every future external mutation requires idempotency/reconciliation review."
+        }
+      }
+    },
+    {
+      "id": "AC-009",
+      "title": "AI Tools Are Adapters, Not Business Logic",
+      "owner": { "kind": "cross-cutting", "boundary": "ai/application" },
+      "primaryPhases": ["phase-2", "phase-3", "phase-4", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "partial",
+          "evidence": [
+            "architecture-policy",
+            "architecture-checker",
+            "architecture-checker-tests",
+            "ai-boundary-guide"
+          ],
+          "reason": "AI-to-database and package dependencies are constrained; tool callback semantics still require review."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No Alex runtime or AI tool adapters exist."
+        },
+        "eval": {
+          "status": "planned",
+          "evidence": ["eval-capability-selection"],
+          "reason": "The scenario expects selection of a canonical application capability rather than shadow AI behavior."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["ai-boundary-guide", "architecture-governance-guide"],
+          "reason": "AI adapter thinness remains a semantic review requirement."
+        }
+      }
+    },
+    {
+      "id": "AC-010",
+      "title": "Model Gateway Isolates Provider Choice",
+      "owner": { "kind": "subsystem", "boundary": "ai/model-gateway" },
+      "primaryPhases": ["phase-2", "phase-3", "phase-4", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Provider identifier searches and gateway boundaries await Model Gateway implementation."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No Model Gateway or provider adapter exists."
+        },
+        "eval": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No routing/profile evaluation target exists."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["ai-boundary-guide", "evaluation-guide", "architecture-governance-guide"],
+          "reason": "Provider-neutrality and explicit live-profile review are documented."
+        }
+      }
+    },
+    {
+      "id": "AC-011",
+      "title": "Context Is Assembled, Not Dumped",
+      "owner": { "kind": "cross-cutting", "boundary": "context/memory" },
+      "primaryPhases": ["phase-2", "phase-3", "phase-4", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Context packet schemas and size budgets do not exist."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No Context Engine or model request path exists."
+        },
+        "eval": {
+          "status": "planned",
+          "evidence": ["eval-financial-grounding", "eval-cross-domain-synthesis"],
+          "reason": "Planned scenarios require bounded grounded evidence but targets are not implemented."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["evaluation-guide", "architecture-governance-guide"],
+          "reason": "Future model inputs require evidence-scope and permission review."
+        }
+      }
+    },
+    {
+      "id": "AC-012",
+      "title": "Canonical Truth Outranks Memory",
+      "owner": { "kind": "cross-cutting", "boundary": "context/memory" },
+      "primaryPhases": ["phase-2", "phase-3", "phase-4", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Memory provenance and supersession schemas do not exist."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No canonical business facts or memory retrieval exists."
+        },
+        "eval": {
+          "status": "planned",
+          "evidence": ["eval-truth-hierarchy"],
+          "reason": "A canonical-versus-memory conflict is registered and visibly not implemented."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["evaluation-guide", "architecture-governance-guide"],
+          "reason": "The truth hierarchy is documented; implementation semantics remain review-only."
+        }
+      }
+    },
+    {
+      "id": "AC-013",
+      "title": "Capability Exposure Is Minimal and Relevant",
+      "owner": { "kind": "cross-cutting", "boundary": "ai/capability-registry" },
+      "primaryPhases": ["phase-2", "phase-3", "phase-4", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Capability Registry and catalog diagnostics do not exist."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No capability-exposure path exists."
+        },
+        "eval": {
+          "status": "planned",
+          "evidence": ["eval-capability-selection"],
+          "reason": "Selection relevance is represented but cannot execute without the registry and target capability."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["ai-boundary-guide", "architecture-governance-guide"],
+          "reason": "Future AI surfaces require explicit capability-scope review."
+        }
+      }
+    },
+    {
+      "id": "AC-014",
+      "title": "Knowledge Retrieval Is Permission-Aware Before Model Access",
+      "owner": { "kind": "cross-cutting", "boundary": "knowledge/authority" },
+      "primaryPhases": ["phase-3", "phase-4", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Knowledge index and permission-aware retrieval boundaries do not exist."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No document retrieval or model-access pipeline exists."
+        },
+        "eval": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "Permission-negative retrieval evaluation is not yet defined."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["architecture-governance-guide"],
+          "reason": "Retrieve-before-authorize designs are prohibited by documented review governance."
+        }
+      }
+    },
+    {
+      "id": "AC-015",
+      "title": "Integrations Are Provider Adapters",
+      "owner": { "kind": "subsystem", "boundary": "integrations" },
+      "primaryPhases": ["phase-3", "phase-4", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "partial",
+          "evidence": [
+            "architecture-policy",
+            "architecture-checker",
+            "integrations-boundary-guide"
+          ],
+          "reason": "The provider adapter package boundary exists; conformance and normalized-schema checks await adapters."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No provider integration exists."
+        },
+        "eval": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No adapter conformance evaluation target exists."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["integrations-boundary-guide", "architecture-governance-guide"],
+          "reason": "Provider-to-canonical translation requires semantic review."
+        }
+      }
+    },
+    {
+      "id": "AC-016",
+      "title": "External Clients Are Portals, Not Nexus Replacements",
+      "owner": { "kind": "cross-cutting", "boundary": "external-interfaces/authority" },
+      "primaryPhases": ["phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "External client projection and principal-binding checks do not exist."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No MCP or external client surface exists."
+        },
+        "eval": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No external-client authority evaluation target exists."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["architecture-governance-guide"],
+          "reason": "Future portal projection and authority scope require security/architecture review."
+        }
+      }
+    },
+    {
+      "id": "AC-017",
+      "title": "Generated Workspaces Are Structured Specifications",
+      "owner": { "kind": "subsystem", "boundary": "workspaces" },
+      "primaryPhases": ["phase-2", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Workspace Specification schema and registered grammar do not exist."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No generated workspace runtime exists."
+        },
+        "eval": {
+          "status": "planned",
+          "evidence": ["eval-workspace-composition"],
+          "reason": "Structured composition expectations are registered but not executable."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["architecture-governance-guide"],
+          "reason": "Arbitrary generated executable UI remains a documented prohibited pattern."
+        }
+      }
+    },
+    {
+      "id": "AC-018",
+      "title": "Visual Grammar Is Versioned and Compatible",
+      "owner": { "kind": "subsystem", "boundary": "workspaces/visual-grammar" },
+      "primaryPhases": ["phase-2", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Visual Grammar schema/version compatibility checks do not exist."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No saved workspace grammar or migration exists."
+        },
+        "eval": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No compatibility evaluation target exists."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["architecture-governance-guide"],
+          "reason": "Future grammar changes require explicit compatibility review."
+        }
+      }
+    },
+    {
+      "id": "AC-019",
+      "title": "Attention Is Separate From Activity",
+      "owner": { "kind": "subsystem", "boundary": "attention" },
+      "primaryPhases": ["phase-2", "phase-3", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Attention, activity, and approval schemas do not exist."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No Watch or interruption behavior exists."
+        },
+        "eval": {
+          "status": "planned",
+          "evidence": ["eval-attention"],
+          "reason": "Low-materiality batching is defined but not executable."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["evaluation-guide", "architecture-governance-guide"],
+          "reason": "Future notifications require materiality and role review."
+        }
+      }
+    },
+    {
+      "id": "AC-020",
+      "title": "Business Audit, AI Activity, Provider Traces, and Technical Observability Stay Distinct",
+      "owner": { "kind": "cross-cutting", "boundary": "audit/observability" },
+      "primaryPhases": [
+        "phase-1",
+        "phase-2",
+        "phase-3",
+        "phase-4",
+        "phase-5",
+        "phase-6",
+        "phase-7"
+      ],
+      "enforcement": {
+        "static": {
+          "status": "partial",
+          "evidence": [
+            "architecture-policy",
+            "audit-boundary-guide",
+            "observability-boundary-guide"
+          ],
+          "reason": "Separate package ownership is declared; schema/privacy separation is not implemented."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No business audit, AI activity, or provider trace records exist."
+        },
+        "eval": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No layer-separation evaluation target exists."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": [
+            "audit-boundary-guide",
+            "observability-boundary-guide",
+            "architecture-governance-guide"
+          ],
+          "reason": "Data audience, sensitivity, and correlation boundaries require review."
+        }
+      }
+    },
+    {
+      "id": "AC-021",
+      "title": "Environment and Secret Isolation",
+      "owner": { "kind": "cross-cutting", "boundary": "deployment/security" },
+      "primaryPhases": ["phase-0", "phase-1", "phase-3", "phase-4", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "partial",
+          "evidence": [
+            "environment-example",
+            "secret-ignore-policy",
+            "database-local-target-safety",
+            "fixture-safety",
+            "fixture-safety-tests",
+            "unit-network-safety"
+          ],
+          "reason": "Local/test isolation and common credential exclusions exist; P0.06-T02 secret scanning and production secret infrastructure do not."
+        },
+        "runtime": {
+          "status": "partial",
+          "evidence": [
+            "database-integration-test",
+            "database-local-target-safety",
+            "local-infrastructure-safety"
+          ],
+          "reason": "Destructive database operations reject non-local targets and tests reject network; staging/production fail-closed behavior is not implemented."
+        },
+        "eval": {
+          "status": "not_applicable",
+          "evidence": [],
+          "reason": "Environment isolation is enforced through deterministic configuration, runtime, and security review."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["repository-guide", "architecture-governance-guide"],
+          "reason": "Cloud workload identity and managed-secret evidence remain future review gates."
+        }
+      }
+    },
+    {
+      "id": "AC-022",
+      "title": "Migration Preserves Provenance and Is Repeatable",
+      "owner": { "kind": "subsystem", "boundary": "migration" },
+      "primaryPhases": ["phase-3", "phase-4", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "partial",
+          "evidence": ["database-governance-script", "database-governance-command"],
+          "reason": "Committed v2 schema migrations are governed; source provenance and v1 transformation mapping do not exist."
+        },
+        "runtime": {
+          "status": "partial",
+          "evidence": ["database-integration-test", "database-integration-command"],
+          "reason": "Local schema migration repeatability is proven, not a source-to-v2 migration pipeline."
+        },
+        "eval": {
+          "status": "not_applicable",
+          "evidence": [],
+          "reason": "Migration reconciliation is primarily deterministic runtime evidence."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["architecture-governance-guide", "database-governance-script"],
+          "reason": "Future source mapping, reconciliation, and failure handling require migration review."
+        }
+      }
+    },
+    {
+      "id": "AC-023",
+      "title": "Repository Must Be Agent-Legible",
+      "owner": { "kind": "architecture-governed", "boundary": "platform-governance" },
+      "primaryPhases": [
+        "phase-0",
+        "phase-1",
+        "phase-2",
+        "phase-3",
+        "phase-4",
+        "phase-5",
+        "phase-6",
+        "phase-7"
+      ],
+      "enforcement": {
+        "static": {
+          "status": "partial",
+          "evidence": [
+            "repository-guide",
+            "architecture-guide",
+            "testing-guide",
+            "evaluation-guide",
+            "contracts-check-command",
+            "architecture-check-command"
+          ],
+          "reason": "Commands, boundaries, and contract status are deterministic and discoverable; semantic completeness still requires review."
+        },
+        "runtime": {
+          "status": "partial",
+          "evidence": ["verify-command", "architecture-test-command", "contracts-test-command"],
+          "reason": "A clean repository can prove its documented gates without infrastructure, but future work boundaries remain an ongoing obligation."
+        },
+        "eval": {
+          "status": "not_applicable",
+          "evidence": [],
+          "reason": "Agent legibility is primarily repository governance rather than product judgment evaluation."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["architecture-governance-guide"],
+          "reason": "Architecture decisions and work-packet scope still require explicit human/Codex review."
+        }
+      }
+    },
+    {
+      "id": "AC-024",
+      "title": "Tiering Does Not Fork the Product",
+      "owner": { "kind": "architecture-governed", "boundary": "platform-governance/entitlements" },
+      "primaryPhases": ["phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "planned",
+          "evidence": [],
+          "reason": "Entitlement schemas and anti-fork checks do not exist."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No plans or entitlements exist."
+        },
+        "eval": {
+          "status": "not_applicable",
+          "evidence": [],
+          "reason": "Product-tier consistency is primarily deterministic schema/runtime evidence."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["architecture-governance-guide", "repository-guide"],
+          "reason": "Future tier changes require one-platform schema and behavior review."
+        }
+      }
+    },
+    {
+      "id": "AC-025",
+      "title": "AI Economics Are Measured Internally",
+      "owner": { "kind": "cross-cutting", "boundary": "ai-economics" },
+      "primaryPhases": ["phase-2", "phase-4", "phase-5", "phase-6", "phase-7"],
+      "enforcement": {
+        "static": {
+          "status": "partial",
+          "evidence": ["evaluation-cost-metadata", "evaluation-harness-tests", "evaluation-guide"],
+          "reason": "Evaluation reports expose provider/cost metadata and enforce zero-cost defaults; production Cost Governor telemetry does not exist."
+        },
+        "runtime": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No model routing, provider use, or organization/workflow cost telemetry exists."
+        },
+        "eval": {
+          "status": "not_yet_executable",
+          "evidence": [],
+          "reason": "No AI-economics product scenario exists; harness cost fields are not product enforcement."
+        },
+        "review": {
+          "status": "partial",
+          "evidence": ["evaluation-guide", "architecture-governance-guide"],
+          "reason": "Future live evaluation and model routing require intentional observable cost review."
+        }
+      }
+    }
+  ]
+}

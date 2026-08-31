@@ -3,7 +3,11 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
 const repositoryRoot = fileURLToPath(new URL('.', import.meta.url));
-const unitExclusions = ['**/*.integration.test.{ts,tsx}', '**/*.eval.test.{ts,tsx}'];
+const unitExclusions = [
+  '**/*.contract.test.{ts,tsx}',
+  '**/*.integration.test.{ts,tsx}',
+  '**/*.eval.test.{ts,tsx}',
+];
 
 export default defineConfig({
   root: repositoryRoot,
@@ -76,6 +80,24 @@ export default defineConfig({
           environment: 'node',
           include: ['evaluations/**/*.eval.test.ts'],
           name: 'eval-harness',
+          passWithNoTests: false,
+          restoreMocks: true,
+          setupFiles: ['./testing/setup/network.ts'],
+          testTimeout: 5_000,
+          unstubEnvs: true,
+          unstubGlobals: true,
+        },
+      },
+      {
+        test: {
+          clearMocks: true,
+          environment: 'node',
+          include: [
+            'architecture/contracts/**/*.contract.test.ts',
+            'apps/*/src/**/*.contract.test.{ts,tsx}',
+            'packages/*/src/**/*.contract.test.{ts,tsx}',
+          ],
+          name: 'contract-framework',
           passWithNoTests: false,
           restoreMocks: true,
           setupFiles: ['./testing/setup/network.ts'],
