@@ -1,0 +1,193 @@
+name: Nexus CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nexus-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: 'true'
+
+jobs:
+  verify:
+    name: Repository verification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      node_version: ${{ steps.versions.outputs.node_version }}
+      pnpm_version: ${{ steps.versions.outputs.pnpm_version }}
+    steps:
+      # Full history is required by the Gitleaks scan inside pnpm verify.
+      - name: Check out the repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install pinned pnpm, Node.js, and dependencies
+        uses: pnpm/setup@703c52620218391530e48b9e8870d5c0082e1b9b # v2.1.0
+        with:
+          version: 11.24.0
+          runtime: node@24.20.0
+          cache: true
+          cache-dependency-path: pnpm-lock.yaml
+          require-lockfile: true
+          install: true
+
+      - name: Confirm toolchain versions
+        id: versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          node_version="$(node --version)"
+          pnpm_version="$(pnpm --version)"
+          printf 'Node.js %s\npnpm %s\n' "$node_version" "$pnpm_version"
+          printf 'node_version=%s\npnpm_version=%s\n' "$node_version" "$pnpm_version" >> "$GITHUB_OUTPUT"
+          test "$node_version" = 'v24.20.0'
+          test "$pnpm_version" = '11.24.0'
+
+      - name: Run deterministic repository verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm verify 2>&1 | tee "$RUNNER_TEMP/nexus-verify.log"
+
+      - name: Upload repository verification failure log
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: nexus-verify-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/nexus-verify.log
+          if-no-files-found: ignore
+          retention-days: 7
+          include-hidden-files: false
+
+  integration:
+    name: PostgreSQL integration verification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    outputs:
+      node_version: ${{ steps.versions.outputs.node_version }}
+      pnpm_version: ${{ steps.versions.outputs.pnpm_version }}
+    env:
+      # This is the registered loopback-only Phase 0 value, not a production secret.
+      DATABASE_URL: postgresql://nexus_v2_dev:nexus_v2_dev_local_only@127.0.0.1:55432/nexus_v2_dev
+    services:
+      postgres:
+        image: postgres:18.6@sha256:4ef4dbc939d61acea57712655ddb4b4ab27419c913f94cca0cd57cb3ea3c2280
+        env:
+          POSTGRES_DB: nexus_v2_dev
+          POSTGRES_USER: nexus_v2_dev
+          POSTGRES_PASSWORD: nexus_v2_dev_local_only
+        ports:
+          - 55432:5432
+        options: >-
+          --health-cmd "pg_isready --username=nexus_v2_dev --dbname=nexus_v2_dev"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install pinned pnpm, Node.js, and dependencies
+        uses: pnpm/setup@703c52620218391530e48b9e8870d5c0082e1b9b # v2.1.0
+        with:
+          version: 11.24.0
+          runtime: node@24.20.0
+          cache: true
+          cache-dependency-path: pnpm-lock.yaml
+          require-lockfile: true
+          install: true
+
+      - name: Confirm toolchain versions
+        id: versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          node_version="$(node --version)"
+          pnpm_version="$(pnpm --version)"
+          printf 'Node.js %s\npnpm %s\n' "$node_version" "$pnpm_version"
+          printf 'node_version=%s\npnpm_version=%s\n' "$node_version" "$pnpm_version" >> "$GITHUB_OUTPUT"
+          test "$node_version" = 'v24.20.0'
+          test "$pnpm_version" = '11.24.0'
+
+      - name: Run migration and integration verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm db:migrate 2>&1 | tee "$RUNNER_TEMP/nexus-integration.log"
+          pnpm db:status 2>&1 | tee -a "$RUNNER_TEMP/nexus-integration.log"
+          pnpm test:integration 2>&1 | tee -a "$RUNNER_TEMP/nexus-integration.log"
+          pnpm db:status 2>&1 | tee -a "$RUNNER_TEMP/nexus-integration.log"
+
+      - name: Redact local credential from failure log
+        if: ${{ failure() }}
+        shell: bash
+        run: |
+          if [[ -f "$RUNNER_TEMP/nexus-integration.log" ]]; then
+            sed -i 's/nexus_v2_dev_local_only/[REDACTED]/g' "$RUNNER_TEMP/nexus-integration.log"
+          fi
+
+      - name: Upload integration failure log
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: nexus-integration-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/nexus-integration.log
+          if-no-files-found: ignore
+          retention-days: 7
+          include-hidden-files: false
+
+  required:
+    name: Nexus CI Required
+    if: ${{ always() }}
+    needs:
+      - verify
+      - integration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Summarize and enforce required results
+        shell: bash
+        env:
+          VERIFY_RESULT: ${{ needs.verify.result }}
+          INTEGRATION_RESULT: ${{ needs.integration.result }}
+          VERIFY_NODE_VERSION: ${{ needs.verify.outputs.node_version }}
+          VERIFY_PNPM_VERSION: ${{ needs.verify.outputs.pnpm_version }}
+          INTEGRATION_NODE_VERSION: ${{ needs.integration.outputs.node_version }}
+          INTEGRATION_PNPM_VERSION: ${{ needs.integration.outputs.pnpm_version }}
+        run: |
+          set -euo pipefail
+          required_result='failure'
+          if [[ "$VERIFY_RESULT" == 'success' && "$INTEGRATION_RESULT" == 'success' ]]; then
+            required_result='success'
+          fi
+
+          {
+            echo '## Nexus CI'
+            echo
+            echo '| Check | Result | Node.js | pnpm |'
+            echo '| --- | --- | --- | --- |'
+            echo "| Repository verification | $VERIFY_RESULT | ${VERIFY_NODE_VERSION:-unavailable} | ${VERIFY_PNPM_VERSION:-unavailable} |"
+            echo "| PostgreSQL integration | $INTEGRATION_RESULT | ${INTEGRATION_NODE_VERSION:-unavailable} | ${INTEGRATION_PNPM_VERSION:-unavailable} |"
+            echo
+            echo "Required CI: **$required_result**"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ "$required_result" != 'success' ]]; then
+            echo "Required CI failed: verify=$VERIFY_RESULT integration=$INTEGRATION_RESULT" >&2
+            exit 1
+          fi
