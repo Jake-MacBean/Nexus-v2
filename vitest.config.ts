@@ -7,6 +7,7 @@ const unitExclusions = [
   '**/*.contract.test.{ts,tsx}',
   '**/*.integration.test.{ts,tsx}',
   '**/*.eval.test.{ts,tsx}',
+  'security/**/*.test.ts',
 ];
 
 export default defineConfig({
@@ -102,6 +103,20 @@ export default defineConfig({
           restoreMocks: true,
           setupFiles: ['./testing/setup/network.ts'],
           testTimeout: 5_000,
+          unstubEnvs: true,
+          unstubGlobals: true,
+        },
+      },
+      {
+        test: {
+          clearMocks: true,
+          environment: 'node',
+          include: ['security/**/*.test.ts'],
+          name: 'security-governance',
+          passWithNoTests: false,
+          restoreMocks: true,
+          setupFiles: ['./testing/setup/network.ts'],
+          testTimeout: 20_000,
           unstubEnvs: true,
           unstubGlobals: true,
         },

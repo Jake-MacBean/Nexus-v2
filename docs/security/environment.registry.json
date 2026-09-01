@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "allowedTrackedEnvFiles": [".env.example"],
+  "frameworkExemptions": [
+    { "name": "BASE_URL", "surface": "import.meta.env", "owner": "Vite built-in" },
+    { "name": "DEV", "surface": "import.meta.env", "owner": "Vite built-in" },
+    { "name": "MODE", "surface": "import.meta.env", "owner": "Vite built-in" },
+    { "name": "PROD", "surface": "import.meta.env", "owner": "Vite built-in" },
+    { "name": "SSR", "surface": "import.meta.env", "owner": "Vite built-in" }
+  ],
+  "variables": [
+    {
+      "name": "API_HOST",
+      "owner": "apps/api",
+      "purpose": "Fastify health-listener bind address.",
+      "visibility": "server",
+      "sensitivity": "local_safe",
+      "environments": ["local", "test", "staging", "production"],
+      "requiredIn": [],
+      "committedExample": { "permitted": true, "allowedValues": ["127.0.0.1"] },
+      "productionSource": "runtime-configuration"
+    },
+    {
+      "name": "API_PORT",
+      "owner": "apps/api",
+      "purpose": "Fastify health-listener port.",
+      "visibility": "server",
+      "sensitivity": "local_safe",
+      "environments": ["local", "test", "staging", "production"],
+      "requiredIn": [],
+      "committedExample": { "permitted": true, "allowedValues": ["3000"] },
+      "productionSource": "runtime-configuration"
+    },
+    {
+      "name": "DATABASE_URL",
+      "owner": "packages/database",
+      "purpose": "PostgreSQL connection string; the committed value is loopback-only and local-safe.",
+      "visibility": "server",
+      "sensitivity": "secret",
+      "environments": ["local", "test", "staging", "production"],
+      "requiredIn": ["staging", "production"],
+      "committedExample": {
+        "permitted": true,
+        "allowedValues": [
+          "postgresql://nexus_v2_dev:nexus_v2_dev_local_only@127.0.0.1:55432/nexus_v2_dev"
+        ]
+      },
+      "productionSource": "google-cloud-secret-manager"
+    },
+    {
+      "name": "GOOGLE_CLOUD_PROJECT",
+      "owner": "deployment/security",
+      "purpose": "Non-secret Google Cloud project identifier placeholder.",
+      "visibility": "tooling",
+      "sensitivity": "public",
+      "environments": ["local", "staging", "production"],
+      "requiredIn": ["staging", "production"],
+      "committedExample": { "permitted": true, "allowedValues": ["nexus-local-example"] },
+      "productionSource": "runtime-configuration"
+    },
+    {
+      "name": "GOOGLE_CLOUD_REGION",
+      "owner": "deployment/security",
+      "purpose": "Non-secret Google Cloud deployment region placeholder.",
+      "visibility": "tooling",
+      "sensitivity": "public",
+      "environments": ["local", "staging", "production"],
+      "requiredIn": ["staging", "production"],
+      "committedExample": { "permitted": true, "allowedValues": ["us-central1"] },
+      "productionSource": "runtime-configuration"
+    },
+    {
+      "name": "NEXUS_LOCAL_POSTGRES_PORT",
+      "owner": "infra/local",
+      "purpose": "Loopback host port for local PostgreSQL.",
+      "visibility": "tooling",
+      "sensitivity": "local_safe",
+      "environments": ["local", "test"],
+      "requiredIn": [],
+      "committedExample": { "permitted": true, "allowedValues": ["55432"] },
+      "productionSource": "not-applicable"
+    },
+    {
+      "name": "NEXUS_LOCAL_TEMPORAL_GRPC_PORT",
+      "owner": "infra/local",
+      "purpose": "Loopback host port for local Temporal gRPC.",
+      "visibility": "tooling",
+      "sensitivity": "local_safe",
+      "environments": ["local", "test"],
+      "requiredIn": [],
+      "committedExample": { "permitted": true, "allowedValues": ["7233"] },
+      "productionSource": "not-applicable"
+    },
+    {
+      "name": "NEXUS_LOCAL_TEMPORAL_UI_PORT",
+      "owner": "infra/local",
+      "purpose": "Loopback host port for the local Temporal UI.",
+      "visibility": "tooling",
+      "sensitivity": "local_safe",
+      "environments": ["local", "test"],
+      "requiredIn": [],
+      "committedExample": { "permitted": true, "allowedValues": ["8233"] },
+      "productionSource": "not-applicable"
+    },
+    {
+      "name": "NODE_ENV",
+      "owner": "platform/tooling",
+      "purpose": "Node runtime environment mode.",
+      "visibility": "tooling",
+      "sensitivity": "public",
+      "environments": ["local", "test", "staging", "production"],
+      "requiredIn": [],
+      "committedExample": { "permitted": true, "allowedValues": ["development"] },
+      "productionSource": "runtime-configuration"
+    },
+    {
+      "name": "TEMPORAL_ADDRESS",
+      "owner": "packages/workflows",
+      "purpose": "Temporal frontend address; currently local scaffolding only.",
+      "visibility": "server",
+      "sensitivity": "public",
+      "environments": ["local", "test", "staging", "production"],
+      "requiredIn": [],
+      "committedExample": { "permitted": true, "allowedValues": ["localhost:7233"] },
+      "productionSource": "runtime-configuration"
+    },
+    {
+      "name": "VITE_API_BASE_URL",
+      "owner": "apps/web",
+      "purpose": "Public browser-visible API origin.",
+      "visibility": "client",
+      "sensitivity": "public",
+      "environments": ["local", "test", "staging", "production"],
+      "requiredIn": ["staging", "production"],
+      "committedExample": { "permitted": true, "allowedValues": ["http://127.0.0.1:3000"] },
+      "productionSource": "runtime-configuration"
+    },
+    {
+      "name": "WEB_ORIGIN",
+      "owner": "apps/api",
+      "purpose": "Allowed browser origin for API smoke endpoints.",
+      "visibility": "server",
+      "sensitivity": "public",
+      "environments": ["local", "test", "staging", "production"],
+      "requiredIn": ["staging", "production"],
+      "committedExample": { "permitted": true, "allowedValues": ["http://127.0.0.1:5173"] },
+      "productionSource": "runtime-configuration"
+    },
+    {
+      "name": "WORKER_HEALTH_HOST",
+      "owner": "apps/worker",
+      "purpose": "Worker health-listener bind address.",
+      "visibility": "server",
+      "sensitivity": "local_safe",
+      "environments": ["local", "test", "staging", "production"],
+      "requiredIn": [],
+      "committedExample": { "permitted": true, "allowedValues": ["127.0.0.1"] },
+      "productionSource": "runtime-configuration"
+    },
+    {
+      "name": "WORKER_HEALTH_PORT",
+      "owner": "apps/worker",
+      "purpose": "Worker health-listener port.",
+      "visibility": "server",
+      "sensitivity": "local_safe",
+      "environments": ["local", "test", "staging", "production"],
+      "requiredIn": [],
+      "committedExample": { "permitted": true, "allowedValues": ["3001"] },
+      "productionSource": "runtime-configuration"
+    }
+  ]
+}

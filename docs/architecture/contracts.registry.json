@@ -132,6 +132,60 @@
       "description": "Local environment and credential-file exclusions."
     },
     {
+      "id": "gitleaks-manifest",
+      "kind": "path",
+      "reference": "security/gitleaks-manifest.ts",
+      "description": "Pinned official scanner version, release assets, and integrity hashes."
+    },
+    {
+      "id": "gitleaks-policy",
+      "kind": "path",
+      "reference": ".gitleaks.toml",
+      "description": "Default Gitleaks rules with no broad Nexus allowlist."
+    },
+    {
+      "id": "gitleaks-fingerprint-policy",
+      "kind": "path",
+      "reference": ".gitleaksignore",
+      "description": "Exact reviewed false-positive fingerprints only."
+    },
+    {
+      "id": "environment-registry",
+      "kind": "path",
+      "reference": "docs/security/environment.registry.json",
+      "description": "Machine-readable environment ownership, visibility, sensitivity, and source policy."
+    },
+    {
+      "id": "security-governance-guide",
+      "kind": "path",
+      "reference": "docs/security/README.md",
+      "description": "Environment isolation, secret storage, scanning, and incident policy."
+    },
+    {
+      "id": "environment-check-command",
+      "kind": "command",
+      "reference": "env:check",
+      "description": "Deterministic environment registry and source-reference validation."
+    },
+    {
+      "id": "secrets-check-command",
+      "kind": "command",
+      "reference": "secrets:check",
+      "description": "Redacted current-tree and full-history secret scanning."
+    },
+    {
+      "id": "security-check-command",
+      "kind": "command",
+      "reference": "security:check",
+      "description": "Complete secret, environment, and contract-evidence security gate."
+    },
+    {
+      "id": "security-test-command",
+      "kind": "command",
+      "reference": "security:test",
+      "description": "Runtime-generated leak, redaction, provisioning, and environment-policy proofs."
+    },
+    {
       "id": "fixture-safety",
       "kind": "path",
       "reference": "packages/testing/src/safety.ts",
@@ -863,23 +917,31 @@
       "primaryPhases": ["phase-0", "phase-1", "phase-3", "phase-4", "phase-6", "phase-7"],
       "enforcement": {
         "static": {
-          "status": "partial",
+          "status": "enforced",
           "evidence": [
             "environment-example",
             "secret-ignore-policy",
+            "gitleaks-manifest",
+            "gitleaks-policy",
+            "gitleaks-fingerprint-policy",
+            "environment-registry",
+            "environment-check-command",
+            "secrets-check-command",
+            "security-check-command",
             "database-local-target-safety",
             "fixture-safety",
             "fixture-safety-tests",
             "unit-network-safety"
           ],
-          "reason": "Local/test isolation and common credential exclusions exist; P0.06-T02 secret scanning and production secret infrastructure do not."
+          "reason": "The current repository statically enforces tracked/untracked/history secret scanning, env-file policy, registered references, committed examples, client visibility, and pinned scanner integrity."
         },
         "runtime": {
           "status": "partial",
           "evidence": [
             "database-integration-test",
             "database-local-target-safety",
-            "local-infrastructure-safety"
+            "local-infrastructure-safety",
+            "security-test-command"
           ],
           "reason": "Destructive database operations reject non-local targets and tests reject network; staging/production fail-closed behavior is not implemented."
         },
@@ -890,7 +952,11 @@
         },
         "review": {
           "status": "partial",
-          "evidence": ["repository-guide", "architecture-governance-guide"],
+          "evidence": [
+            "repository-guide",
+            "architecture-governance-guide",
+            "security-governance-guide"
+          ],
           "reason": "Cloud workload identity and managed-secret evidence remain future review gates."
         }
       }
@@ -945,14 +1011,22 @@
             "architecture-guide",
             "testing-guide",
             "evaluation-guide",
+            "security-governance-guide",
+            "environment-registry",
             "contracts-check-command",
-            "architecture-check-command"
+            "architecture-check-command",
+            "security-check-command"
           ],
           "reason": "Commands, boundaries, and contract status are deterministic and discoverable; semantic completeness still requires review."
         },
         "runtime": {
           "status": "partial",
-          "evidence": ["verify-command", "architecture-test-command", "contracts-test-command"],
+          "evidence": [
+            "verify-command",
+            "architecture-test-command",
+            "contracts-test-command",
+            "security-test-command"
+          ],
           "reason": "A clean repository can prove its documented gates without infrastructure, but future work boundaries remain an ongoing obligation."
         },
         "eval": {

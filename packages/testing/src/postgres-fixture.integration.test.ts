@@ -58,11 +58,10 @@ test('fixture teardown is safe to rerun', async () => {
 
 test('non-local PostgreSQL targets are rejected before fixture mutation', async () => {
   const scope = createFixtureScope();
-  await expect(
-    createPostgresFixtureStore(
-      scope,
-      'postgresql://nexus_v2_dev:nexus_v2_dev_local_only@example.invalid:55432/nexus_v2_dev',
-    ),
-  ).rejects.toThrow(/rebuild refused/u);
+  const remoteTarget = new URL(localUrl);
+  remoteTarget.hostname = 'example.invalid';
+  await expect(createPostgresFixtureStore(scope, remoteTarget.toString())).rejects.toThrow(
+    /rebuild refused/u,
+  );
   await scope.teardown();
 });

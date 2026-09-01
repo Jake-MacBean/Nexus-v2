@@ -4,7 +4,7 @@ Nexus v2 is being built as a clean, TypeScript-first platform. This repository c
 
 ## Current work packet
 
-`P0.06-T01 - Create the Nexus architecture contract-test framework`
+`P0.06-T02 - Implement Nexus secret and environment policy enforcement`
 
 The repository contains minimal smoke-only deployable applications, explicit package boundaries, a repeatable PostgreSQL/Drizzle migration harness, deterministic fixtures, a standardized Vitest correctness harness, a provider-free evaluation system, and a machine-readable Architecture Contract registry. Planned contracts and evaluations remain visibly unimplemented rather than appearing as passing behavior. No Nexus business schema or behavior has been introduced.
 
@@ -48,6 +48,13 @@ For the initial checkout, before a lockfile exists, use `pnpm install`. The comm
 | `pnpm contracts:list --json`     | Emit deterministic machine-readable contract status.                    |
 | `pnpm contracts:check`           | Validate registry completeness, metadata, and evidence references.      |
 | `pnpm contracts:test`            | Run contract-framework and current explicit contract tests.             |
+| `pnpm env:check`                 | Validate environment registry, references, examples, and env files.     |
+| `pnpm secrets:bootstrap`         | Provision and verify the pinned official Gitleaks binary.               |
+| `pnpm secrets:working`           | Scan tracked and relevant untracked current files with redaction.       |
+| `pnpm secrets:history`           | Scan full Git history with redaction.                                   |
+| `pnpm secrets:check`             | Run both current-file and full-history secret scans.                    |
+| `pnpm security:check`            | Run the complete secret and environment governance gate.                |
+| `pnpm security:test`             | Run runtime-generated security-governance proofs.                       |
 | `pnpm architecture:check`        | Validate the real workspace source and manifest dependency graph.       |
 | `pnpm architecture:test`         | Run positive and negative fixture tests for the architecture checker.   |
 | `pnpm database:governance`       | Validate committed migration artifacts and prohibit schema push.        |
@@ -80,9 +87,11 @@ Vitest is the standard runner for TypeScript/React unit and integration tests. U
 
 The canonical Architecture Contract index is `docs/architecture/contracts.registry.json`. Run `pnpm contracts:list` to see exactly which contracts are partial, planned, not yet executable, or enforced. See `docs/architecture/README.md` for evidence rules, phase/owner semantics, contract-test conventions, and governance.
 
+The canonical environment-variable inventory is `docs/security/environment.registry.json`. Gitleaks and environment enforcement run through `pnpm security:check`; see `docs/security/README.md` before introducing configuration or secret metadata. Production secret values will come from Google Cloud Secret Manager and never belong in source control.
+
 ## Environment configuration
 
-Copy `.env.example` to a local `.env` when local overrides are needed. The example contains names and non-secret local values only. Never commit `.env`, credentials, production identifiers, customer data, or secret-looking placeholders.
+Copy `.env.example` to a local `.env` when local overrides are needed. The example contains registered public or explicitly loopback-only local-safe values. Never commit `.env`, credentials, production identifiers, customer data, or secret-looking placeholders. If you are unsure whether a value is a secret, do not commit it.
 
 The default local topology is:
 

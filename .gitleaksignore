@@ -1,0 +1,13 @@
+# Narrow false-positive fingerprints only. The database integration test stores
+# deterministic schema metadata in a field named `key`; none are credentials.
+packages/database/src/tooling/database.integration.test.ts:generic-api-key:87
+packages/database/src/tooling/database.integration.test.ts:generic-api-key:93
+packages/database/src/tooling/database.integration.test.ts:generic-api-key:94
+packages/database/src/tooling/database.integration.test.ts:generic-api-key:100
+
+# Historical forms of the same deterministic metadata assertions.
+35dc44f24d94f4c7376be5a9e89a02d08e9cfa09:packages/database/src/tooling/database.integration.test.ts:generic-api-key:94
+402814fb67499c9e6c4cfe3eb111016057d9ddb2:packages/database/src/tooling/database.integration.test.ts:generic-api-key:93
+402814fb67499c9e6c4cfe3eb111016057d9ddb2:packages/database/src/tooling/database.integration.test.ts:generic-api-key:99
+402814fb67499c9e6c4cfe3eb111016057d9ddb2:packages/database/src/tooling/database.integration.test.ts:generic-api-key:100
+402814fb67499c9e6c4cfe3eb111016057d9ddb2:packages/database/src/tooling/database.integration.test.ts:generic-api-key:106

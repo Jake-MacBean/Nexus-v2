@@ -1,0 +1,4 @@
+title = "Nexus v2 secret detection"
+
+[extend]
+useDefault = true
