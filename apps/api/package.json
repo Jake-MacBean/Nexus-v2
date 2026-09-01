@@ -6,10 +6,11 @@
   "scripts": {
     "build": "tsc -p tsconfig.json --pretty false",
     "start": "node dist/index.js",
-    "typecheck": "tsc -p tsconfig.json --noEmit --pretty false"
+    "typecheck": "pnpm --filter @nexus-v2/observability build && tsc -p tsconfig.json --noEmit --pretty false"
   },
   "dependencies": {
     "@fastify/cors": "11.3.0",
+    "@nexus-v2/observability": "workspace:*",
     "fastify": "5.12.1"
   },
   "devDependencies": {

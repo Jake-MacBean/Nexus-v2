@@ -1,10 +1,19 @@
 # `@nexus-v2/worker`
 
-Minimal worker-process scaffold for Phase 0.
+Minimal worker-process scaffold with the Phase 0 technical observability baseline.
 
 ## Ownership
 
-This package owns process lifecycle and basic health reporting only. It must not run business jobs, schedules, workflows, Commands, Queries, persistence, integrations, or provider behavior during this work packet.
+This package owns process lifecycle, explicit `/health` and `/ready` reporting,
+and `runWorkerOperation`, the technical context entry point for future adapters.
+An operation preserves a valid incoming correlation ID, creates its own request/
+operation ID, starts a Nexus span, and scopes structured logs. It does not define
+a queue, job, workflow, event, Command, Query, integration, persistence, or
+provider behavior.
+
+Health means the process is alive. Readiness follows the worker's local lifecycle
+state. Both technical endpoints return `x-request-id` and `x-correlation-id` and
+safe status/service/environment bodies.
 
 ## Configuration
 

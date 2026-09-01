@@ -57,6 +57,7 @@ For the initial checkout, before a lockfile exists, use `pnpm install`. The comm
 | `pnpm security:test`             | Run runtime-generated security-governance proofs.                       |
 | `pnpm architecture:check`        | Validate the real workspace source and manifest dependency graph.       |
 | `pnpm architecture:test`         | Run positive and negative fixture tests for the architecture checker.   |
+| `pnpm observability:test`        | Prove local logging, privacy, tracing, and cross-path correlation.      |
 | `pnpm database:governance`       | Validate committed migration artifacts and prohibit schema push.        |
 | `pnpm db:local:up`               | Start and health-check only the local PostgreSQL service.               |
 | `pnpm db:generate`               | Generate a reviewable SQL migration from the approved Drizzle schema.   |
@@ -84,6 +85,8 @@ The lint gate remains an explicit placeholder because its implementation belongs
 The database governance gate also runs in `pnpm verify` without requiring live infrastructure. Live database commands require `DATABASE_URL`; use the loopback-only value in `.env.example`. See `packages/database/README.md` for connection ownership, migration authoring, rebuild safety, and drift-detection limits.
 
 Vitest is the standard runner for TypeScript/React unit and integration tests. Unit tests are fast and infrastructure-independent; integration tests are explicit and currently use recognized local PostgreSQL only. Evaluation-harness tests remain explicitly discovered through `pnpm eval:self` and excluded from both correctness suites. See `docs/testing.md` for correctness-test rules and `evaluations/README.md` for evaluation scenarios, outcomes, baselines, governance, and provider-cost isolation.
+
+Technical logging, request/correlation identifiers, health/readiness semantics, and the local no-export OpenTelemetry boundary are documented in `docs/observability.md`. Run `pnpm observability:test` for the focused, network-free proof. Technical observability diagnoses the system and is not Business Audit, AI Activity, or provider tracing.
 
 The canonical Architecture Contract index is `docs/architecture/contracts.registry.json`. Run `pnpm contracts:list` to see exactly which contracts are partial, planned, not yet executable, or enforced. See `docs/architecture/README.md` for evidence rules, phase/owner semantics, contract-test conventions, and governance.
 

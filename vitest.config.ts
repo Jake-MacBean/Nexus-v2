@@ -33,7 +33,11 @@ export default defineConfig({
           clearMocks: true,
           environment: 'node',
           exclude: unitExclusions,
-          include: ['apps/{api,worker}/src/**/*.test.ts', 'packages/*/src/**/*.test.ts'],
+          include: [
+            'apps/{api,worker}/src/**/*.test.ts',
+            'packages/*/src/**/*.test.ts',
+            'testing/**/*.test.ts',
+          ],
           name: 'unit-node',
           passWithNoTests: false,
           restoreMocks: true,

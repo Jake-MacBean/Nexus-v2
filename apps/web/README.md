@@ -4,7 +4,12 @@ Minimal React/Vite smoke application for Phase 0.
 
 ## Ownership
 
-This package owns browser bootstrap, presentation of scaffold health, and an HTTP adapter for the API health contract. It must not import server, domain, database, authority, workflow, provider, or infrastructure implementation packages. It contains no Nexus business behavior.
+This package owns browser bootstrap, presentation of scaffold health, and an HTTP
+adapter for the API health contract. Each controlled health call creates a
+per-call `x-request-id` and a bounded `x-correlation-id`; it does not establish a
+persistent user/session tracking identity or ship browser logs. The app must not
+import server, domain, database, authority, workflow, provider, or infrastructure
+implementation packages. It contains no Nexus business behavior.
 
 ## Configuration
 

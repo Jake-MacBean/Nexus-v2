@@ -252,6 +252,30 @@
       "description": "Technical observability ownership boundary."
     },
     {
+      "id": "observability-implementation",
+      "kind": "path",
+      "reference": "packages/observability/src",
+      "description": "Provider-neutral logging, correlation, redaction, and OpenTelemetry-compatible technical telemetry primitives."
+    },
+    {
+      "id": "observability-guide",
+      "kind": "path",
+      "reference": "docs/observability.md",
+      "description": "Repository-level observability flow, health/readiness semantics, privacy rules, testing, and exporter boundary."
+    },
+    {
+      "id": "observability-test-command",
+      "kind": "command",
+      "reference": "observability:test",
+      "description": "Deterministic local observability, privacy, API, worker, and correlation smoke proof."
+    },
+    {
+      "id": "observability-smoke-test",
+      "kind": "path",
+      "reference": "testing/observability-smoke.test.ts",
+      "description": "Cross-path API and worker correlation proof using a local in-memory OpenTelemetry provider."
+    },
+    {
       "id": "evaluation-guide",
       "kind": "path",
       "reference": "evaluations/README.md",
@@ -903,14 +927,16 @@
           "evidence": [
             "architecture-policy",
             "audit-boundary-guide",
-            "observability-boundary-guide"
+            "observability-boundary-guide",
+            "observability-implementation",
+            "observability-guide"
           ],
-          "reason": "Separate package ownership is declared; schema/privacy separation is not implemented."
+          "reason": "Technical observability now has a separate package contract, privacy-safe schema, redaction boundary, and explicit prohibition on becoming Business Audit, AI Activity, or provider traces; those other record types remain unimplemented."
         },
         "runtime": {
-          "status": "not_yet_executable",
-          "evidence": [],
-          "reason": "No business audit, AI activity, or provider trace records exist."
+          "status": "partial",
+          "evidence": ["observability-test-command", "observability-smoke-test"],
+          "reason": "Local tests enforce structured technical correlation and privacy behavior across API and worker paths; Business Audit, AI Activity, and provider trace runtime separation cannot be fully exercised until those records exist."
         },
         "eval": {
           "status": "not_yet_executable",
@@ -922,9 +948,10 @@
           "evidence": [
             "audit-boundary-guide",
             "observability-boundary-guide",
+            "observability-guide",
             "architecture-governance-guide"
           ],
-          "reason": "Data audience, sensitivity, and correlation boundaries require review."
+          "reason": "The technical telemetry audience, sensitivity, propagation, and future exporter boundary are documented; cross-record correlation still requires review as other layers arrive."
         }
       }
     },
@@ -952,9 +979,11 @@
             "unit-network-safety",
             "terraform-foundation-module",
             "terraform-environment-roots",
-            "terraform-runbook"
+            "terraform-runbook",
+            "observability-implementation",
+            "observability-test-command"
           ],
-          "reason": "The repository statically enforces secret and environment policy and now defines fixed, separately stated cloud roots with environment-scoped resources, empty secret containers, and least-privilege runtime identities."
+          "reason": "The repository statically enforces secret and environment policy, defines separately stated cloud roots, and applies deterministic technical-log redaction without recording request bodies, credentials, or secret environment values."
         },
         "runtime": {
           "status": "partial",
@@ -962,9 +991,10 @@
             "database-integration-test",
             "database-local-target-safety",
             "local-infrastructure-safety",
-            "security-test-command"
+            "security-test-command",
+            "observability-test-command"
           ],
-          "reason": "Destructive local database operations reject non-local targets and tests reject network; the cloud skeleton validates without credentials but has not been applied, so deployed isolation is not proven."
+          "reason": "Destructive local database operations reject non-local targets, tests reject network, and observability privacy tests protect common secret keys; the cloud skeleton has not been applied, so deployed isolation is not proven."
         },
         "eval": {
           "status": "not_applicable",
@@ -1040,9 +1070,11 @@
             "security-check-command",
             "terraform-foundation-module",
             "terraform-environment-roots",
-            "terraform-runbook"
+            "terraform-runbook",
+            "observability-guide",
+            "observability-test-command"
           ],
-          "reason": "Commands, boundaries, contract status, Terraform roots, required inputs, and safe validation/plan procedures are deterministic and discoverable; semantic completeness still requires review."
+          "reason": "Commands, boundaries, contract status, infrastructure procedures, and observability participation/privacy rules are deterministic and discoverable; semantic completeness still requires review."
         },
         "runtime": {
           "status": "partial",
@@ -1050,9 +1082,11 @@
             "verify-command",
             "architecture-test-command",
             "contracts-test-command",
-            "security-test-command"
+            "security-test-command",
+            "observability-test-command",
+            "observability-smoke-test"
           ],
-          "reason": "A clean repository can prove its documented gates without infrastructure, but future work boundaries remain an ongoing obligation."
+          "reason": "A clean repository can prove its documented gates and local correlation model without infrastructure or telemetry services, but future work boundaries remain an ongoing obligation."
         },
         "eval": {
           "status": "not_applicable",
@@ -1061,8 +1095,8 @@
         },
         "review": {
           "status": "partial",
-          "evidence": ["architecture-governance-guide", "terraform-runbook"],
-          "reason": "Architecture, Terraform plans, environment identity, IAM, exposure, cost, and work-packet scope require explicit human/Codex review."
+          "evidence": ["architecture-governance-guide", "terraform-runbook", "observability-guide"],
+          "reason": "Architecture, infrastructure plans, telemetry privacy/export, environment identity, IAM, exposure, cost, and work-packet scope require explicit human/Codex review."
         }
       }
     },

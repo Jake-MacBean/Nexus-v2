@@ -11,7 +11,7 @@ vi.mock('./api-health.js', () => ({
 import { App } from './App.js';
 
 beforeEach(() => {
-  getApiHealthMock.mockResolvedValue({ service: 'api', status: 'ok' });
+  getApiHealthMock.mockResolvedValue({ environment: 'test', service: 'api', status: 'ok' });
 });
 
 test('renders the scaffold and reports a stubbed healthy API', async () => {
