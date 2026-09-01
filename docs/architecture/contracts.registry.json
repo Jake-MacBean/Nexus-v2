@@ -120,6 +120,24 @@
       "description": "Allow-listed local infrastructure lifecycle behavior."
     },
     {
+      "id": "terraform-foundation-module",
+      "kind": "path",
+      "reference": "infra/terraform/modules/nexus_environment",
+      "description": "Reusable Google Cloud foundation with environment-scoped resources and least-privilege runtime identities."
+    },
+    {
+      "id": "terraform-environment-roots",
+      "kind": "path",
+      "reference": "infra/terraform/environments",
+      "description": "Separate dev, staging, and prod Terraform roots with fixed environment identities and state prefixes."
+    },
+    {
+      "id": "terraform-runbook",
+      "kind": "path",
+      "reference": "infra/terraform/README.md",
+      "description": "Credential-free validation, state safety, environment isolation, cost posture, and reviewed-plan procedure."
+    },
+    {
       "id": "environment-example",
       "kind": "path",
       "reference": ".env.example",
@@ -931,9 +949,12 @@
             "database-local-target-safety",
             "fixture-safety",
             "fixture-safety-tests",
-            "unit-network-safety"
+            "unit-network-safety",
+            "terraform-foundation-module",
+            "terraform-environment-roots",
+            "terraform-runbook"
           ],
-          "reason": "The current repository statically enforces tracked/untracked/history secret scanning, env-file policy, registered references, committed examples, client visibility, and pinned scanner integrity."
+          "reason": "The repository statically enforces secret and environment policy and now defines fixed, separately stated cloud roots with environment-scoped resources, empty secret containers, and least-privilege runtime identities."
         },
         "runtime": {
           "status": "partial",
@@ -943,7 +964,7 @@
             "local-infrastructure-safety",
             "security-test-command"
           ],
-          "reason": "Destructive database operations reject non-local targets and tests reject network; staging/production fail-closed behavior is not implemented."
+          "reason": "Destructive local database operations reject non-local targets and tests reject network; the cloud skeleton validates without credentials but has not been applied, so deployed isolation is not proven."
         },
         "eval": {
           "status": "not_applicable",
@@ -955,9 +976,10 @@
           "evidence": [
             "repository-guide",
             "architecture-governance-guide",
-            "security-governance-guide"
+            "security-governance-guide",
+            "terraform-runbook"
           ],
-          "reason": "Cloud workload identity and managed-secret evidence remain future review gates."
+          "reason": "State, plan, IAM, resource, and cost review rules are documented; cloud workload identity, secret payload handling, and real environment evidence remain future gates."
         }
       }
     },
@@ -1015,9 +1037,12 @@
             "environment-registry",
             "contracts-check-command",
             "architecture-check-command",
-            "security-check-command"
+            "security-check-command",
+            "terraform-foundation-module",
+            "terraform-environment-roots",
+            "terraform-runbook"
           ],
-          "reason": "Commands, boundaries, and contract status are deterministic and discoverable; semantic completeness still requires review."
+          "reason": "Commands, boundaries, contract status, Terraform roots, required inputs, and safe validation/plan procedures are deterministic and discoverable; semantic completeness still requires review."
         },
         "runtime": {
           "status": "partial",
@@ -1036,8 +1061,8 @@
         },
         "review": {
           "status": "partial",
-          "evidence": ["architecture-governance-guide"],
-          "reason": "Architecture decisions and work-packet scope still require explicit human/Codex review."
+          "evidence": ["architecture-governance-guide", "terraform-runbook"],
+          "reason": "Architecture, Terraform plans, environment identity, IAM, exposure, cost, and work-packet scope require explicit human/Codex review."
         }
       }
     },

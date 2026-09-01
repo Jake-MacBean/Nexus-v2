@@ -1,0 +1,8 @@
+# Template only: replace every placeholder before planning. Never add secrets.
+project_id = "replace-nexus-staging-project"
+
+container_images = {
+  web    = "us-east1-docker.pkg.dev/replace-nexus-staging-project/nexus-v2-staging-containers/web@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  api    = "us-east1-docker.pkg.dev/replace-nexus-staging-project/nexus-v2-staging-containers/api@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  worker = "us-east1-docker.pkg.dev/replace-nexus-staging-project/nexus-v2-staging-containers/worker@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+}

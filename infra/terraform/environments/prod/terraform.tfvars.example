@@ -1,0 +1,13 @@
+# Structural template only. Production values require separate review before planning.
+project_id      = "replace-nexus-prod-project"
+region          = "REPLACE_WITH_REVIEWED_REGION"
+bucket_location = "REPLACE_WITH_REVIEWED_BUCKET_LOCATION"
+
+cloud_sql_tier          = "db-REPLACE_WITH_REVIEWED_TIER"
+cloud_run_max_instances = 1 # Replace with an evidence-based reviewed ceiling.
+
+container_images = {
+  web    = "REPLACE_REGION-docker.pkg.dev/replace-nexus-prod-project/nexus-v2-prod-containers/web@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  api    = "REPLACE_REGION-docker.pkg.dev/replace-nexus-prod-project/nexus-v2-prod-containers/api@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  worker = "REPLACE_REGION-docker.pkg.dev/replace-nexus-prod-project/nexus-v2-prod-containers/worker@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+}
