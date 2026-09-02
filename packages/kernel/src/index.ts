@@ -10,3 +10,27 @@ export const packageIdentity = {
 } as const;
 
 export type PackageIdentity = typeof packageIdentity;
+
+export {
+  asPromotionOrganizationId,
+  defineFeatureFlag,
+  isPromotionEnvironment,
+  isPromotionMode,
+  promotionEnvironments,
+  promotionModes,
+  resolvePromotionMode,
+  StaticPromotionModeSource,
+} from './promotion-control.js';
+export type {
+  FeatureFlagDefinition,
+  FeatureFlagDefinitionInput,
+  PromotionEnvironment,
+  PromotionEvaluationContext,
+  PromotionMode,
+  PromotionModeSource,
+  PromotionOrganizationId,
+  PromotionResolutionSource,
+  PromotionSourceResolution,
+  ResolvedPromotionMode,
+  StaticPromotionOverride,
+} from './promotion-control.js';

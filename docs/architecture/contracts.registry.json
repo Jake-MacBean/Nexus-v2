@@ -276,6 +276,30 @@
       "description": "Cross-path API and worker correlation proof using a local in-memory OpenTelemetry provider."
     },
     {
+      "id": "promotion-control-contracts",
+      "kind": "path",
+      "reference": "packages/kernel/src/promotion-control.ts",
+      "description": "Domain-neutral feature-flag definitions, scoped resolution contract, safe default, and deterministic static source."
+    },
+    {
+      "id": "promotion-control-execution",
+      "kind": "path",
+      "reference": "packages/application/src/promotion-control.ts",
+      "description": "Application-level disabled, Shadow Mode, and enabled orchestration with an explicit side-effect boundary."
+    },
+    {
+      "id": "promotion-control-tests",
+      "kind": "path",
+      "reference": "packages/application/src/promotion-control.test.ts",
+      "description": "Provider-free smoke and failure proofs that Shadow Mode records proposals without invoking the executor."
+    },
+    {
+      "id": "promotion-control-guide",
+      "kind": "path",
+      "reference": "docs/promotion-control.md",
+      "description": "Promotion modes, scope precedence, Shadow safety, conceptual separation, rollout testing, and future adapter guidance."
+    },
+    {
       "id": "evaluation-guide",
       "kind": "path",
       "reference": "evaluations/README.md",
@@ -459,8 +483,12 @@
       "enforcement": {
         "static": {
           "status": "planned",
-          "evidence": [],
-          "reason": "Authority adapter parity and bypass checks await the Authority Engine."
+          "evidence": [
+            "promotion-control-contracts",
+            "promotion-control-execution",
+            "promotion-control-guide"
+          ],
+          "reason": "Promotion eligibility is structurally and explicitly separate from authorization, but Authority adapter parity and bypass checks await the Authority Engine."
         },
         "runtime": {
           "status": "not_yet_executable",
@@ -474,8 +502,8 @@
         },
         "review": {
           "status": "partial",
-          "evidence": ["architecture-governance-guide"],
-          "reason": "Every future consequential action requires manual authority-boundary review until runtime parity tests exist."
+          "evidence": ["architecture-governance-guide", "promotion-control-guide"],
+          "reason": "Enabled promotion grants no authority; every future consequential action still requires authority-boundary review until the Authority Engine and runtime parity tests exist."
         }
       }
     },
@@ -888,8 +916,8 @@
       "enforcement": {
         "static": {
           "status": "planned",
-          "evidence": [],
-          "reason": "Attention, activity, and approval schemas do not exist."
+          "evidence": ["promotion-control-execution", "promotion-control-guide"],
+          "reason": "Shadow observations explicitly exclude attention and notification outcomes, while actual attention, activity, and approval schemas do not yet exist."
         },
         "runtime": {
           "status": "not_yet_executable",
@@ -903,8 +931,12 @@
         },
         "review": {
           "status": "partial",
-          "evidence": ["evaluation-guide", "architecture-governance-guide"],
-          "reason": "Future notifications require materiality and role review."
+          "evidence": [
+            "evaluation-guide",
+            "architecture-governance-guide",
+            "promotion-control-guide"
+          ],
+          "reason": "Promotion evidence is documented as non-interruptive; future notifications still require materiality and role review."
         }
       }
     },
@@ -1072,9 +1104,12 @@
             "terraform-environment-roots",
             "terraform-runbook",
             "observability-guide",
-            "observability-test-command"
+            "observability-test-command",
+            "promotion-control-contracts",
+            "promotion-control-execution",
+            "promotion-control-guide"
           ],
-          "reason": "Commands, boundaries, contract status, infrastructure procedures, and observability participation/privacy rules are deterministic and discoverable; semantic completeness still requires review."
+          "reason": "Commands, boundaries, contract status, infrastructure procedures, observability rules, and promotion-control adoption/safety rules are deterministic and discoverable; semantic completeness still requires review."
         },
         "runtime": {
           "status": "partial",
@@ -1084,9 +1119,10 @@
             "contracts-test-command",
             "security-test-command",
             "observability-test-command",
-            "observability-smoke-test"
+            "observability-smoke-test",
+            "promotion-control-tests"
           ],
-          "reason": "A clean repository can prove its documented gates and local correlation model without infrastructure or telemetry services, but future work boundaries remain an ongoing obligation."
+          "reason": "A clean repository can prove its documented gates, local correlation model, and promotion-control smoke behavior without infrastructure or external providers, but future work boundaries remain an ongoing obligation."
         },
         "eval": {
           "status": "not_applicable",
@@ -1095,8 +1131,13 @@
         },
         "review": {
           "status": "partial",
-          "evidence": ["architecture-governance-guide", "terraform-runbook", "observability-guide"],
-          "reason": "Architecture, infrastructure plans, telemetry privacy/export, environment identity, IAM, exposure, cost, and work-packet scope require explicit human/Codex review."
+          "evidence": [
+            "architecture-governance-guide",
+            "terraform-runbook",
+            "observability-guide",
+            "promotion-control-guide"
+          ],
+          "reason": "Architecture, infrastructure plans, telemetry privacy/export, promotion/authority separation, environment identity, IAM, exposure, cost, and work-packet scope require explicit human/Codex review."
         }
       }
     },

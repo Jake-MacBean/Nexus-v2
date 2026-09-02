@@ -113,7 +113,11 @@ importers:
 
   packages/ai: {}
 
-  packages/application: {}
+  packages/application:
+    dependencies:
+      '@nexus-v2/kernel':
+        specifier: workspace:*
+        version: link:../kernel
 
   packages/audit: {}
 

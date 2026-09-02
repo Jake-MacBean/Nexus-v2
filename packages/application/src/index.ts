@@ -10,3 +10,23 @@ export const packageIdentity = {
 } as const;
 
 export type PackageIdentity = typeof packageIdentity;
+
+export {
+  InMemoryShadowRecorder,
+  PromotionResolutionError,
+  ProposalGenerationError,
+  runControlledCapability,
+  ShadowRecordingError,
+} from './promotion-control.js';
+export type {
+  ControlledCapabilityOptions,
+  ControlledCapabilityResult,
+  DisabledPromotionResult,
+  ExecutedPromotionResult,
+  PromotionClock,
+  PromotionProposal,
+  PromotionProposalValue,
+  ShadowedPromotionResult,
+  ShadowRecord,
+  ShadowRecorder,
+} from './promotion-control.js';

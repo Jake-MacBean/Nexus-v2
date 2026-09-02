@@ -1,6 +1,6 @@
 # `@nexus-v2/application`
 
-Status: Phase 0 architecture scaffold. The public entry point intentionally exports package identity only.
+Status: Phase 0 architecture scaffold with promotion-controlled execution orchestration.
 
 ## Purpose
 
@@ -11,6 +11,33 @@ The future home of canonical Commands, Queries, and cross-domain application orc
 - Application use-case boundaries and orchestration that invoke domain capabilities.
 - The single capability surface used later by UI, API, AI, workflows, MCP, and integrations.
 
+## Promotion-controlled execution
+
+`runControlledCapability` establishes one explicit application-level boundary:
+
+```text
+resolve promotion mode
+  disabled -> stop
+  shadow   -> propose -> record -> stop
+  enabled  -> propose -> executor
+```
+
+The proposer is contractually side-effect-free. The executor is the only callback in
+this abstraction allowed to represent an external effect. TypeScript cannot prove
+side-effect freedom, so structure, tests, and review enforce this rule.
+
+Shadow recording is provider-neutral. `InMemoryShadowRecorder` supports deterministic
+Phase 0 tests without deciding a database, event, analytics, or external-provider
+destination. A recorder failure throws and cannot fall through to the executor.
+
+An `executed` result means only that the supplied test/application executor callback
+ran. **ENABLED IS NOT AUTHORIZED.** Future Authority, permission, policy, approval,
+risk, and reversibility checks remain mandatory at their proper boundary.
+
+Shadow observations are engineering promotion evidence. They are not Business Audit,
+AI Activity, Authority decisions, notifications, Needs You items, or Control Center
+items.
+
 ## Explicit prohibitions
 
 - HTTP, React, model-provider, webhook, or database-adapter behavior.
@@ -18,7 +45,7 @@ The future home of canonical Commands, Queries, and cross-domain application orc
 
 ## Allowed dependency direction
 
-This scaffold currently declares no runtime workspace dependencies.
+This package depends on `@nexus-v2/kernel` for promotion-control contracts.
 
 - May depend on: kernel, contracts, domain public entry points, authority, audit, and events.
 - Must never depend on: Apps, database implementations, integrations, AI adapters, workspaces, or workflows.
