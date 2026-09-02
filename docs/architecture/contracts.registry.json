@@ -69,7 +69,13 @@
       "id": "architecture-governance-guide",
       "kind": "path",
       "reference": "docs/architecture/README.md",
-      "description": "Architecture-contract governance, review, and extension rules."
+      "description": "Repository architecture map plus Architecture Contract governance, review, and extension rules."
+    },
+    {
+      "id": "agent-operating-guide",
+      "kind": "path",
+      "reference": "AGENTS.md",
+      "description": "Canonical repository operating guide for ownership, setup, boundaries, work packets, escalation, and Definition of Done."
     },
     {
       "id": "repository-guide",
@@ -1092,6 +1098,7 @@
           "status": "partial",
           "evidence": [
             "repository-guide",
+            "agent-operating-guide",
             "architecture-guide",
             "testing-guide",
             "evaluation-guide",
@@ -1109,7 +1116,7 @@
             "promotion-control-execution",
             "promotion-control-guide"
           ],
-          "reason": "Commands, boundaries, contract status, infrastructure procedures, observability rules, and promotion-control adoption/safety rules are deterministic and discoverable; semantic completeness still requires review."
+          "reason": "The root operating guide and architecture map make commands, ownership, boundaries, contract status, infrastructure procedures, and safety rules discoverable; semantic completeness remains an ongoing review property."
         },
         "runtime": {
           "status": "partial",
@@ -1133,11 +1140,12 @@
           "status": "partial",
           "evidence": [
             "architecture-governance-guide",
+            "agent-operating-guide",
             "terraform-runbook",
             "observability-guide",
             "promotion-control-guide"
           ],
-          "reason": "Architecture, infrastructure plans, telemetry privacy/export, promotion/authority separation, environment identity, IAM, exposure, cost, and work-packet scope require explicit human/Codex review."
+          "reason": "The operating guide defines escalation and completion rules; architecture, infrastructure, telemetry, promotion/authority separation, environment identity, IAM, exposure, cost, and work-packet scope still require explicit review."
         }
       }
     },

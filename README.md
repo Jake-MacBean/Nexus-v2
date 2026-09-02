@@ -2,11 +2,11 @@
 
 Nexus v2 is being built as a clean, TypeScript-first platform. This repository currently contains only the Phase 0 Engineering Harness. Substantive Nexus business features are intentionally out of scope.
 
-## Current work packet
+## Repository guides and current status
 
-`P0.06-T02 - Implement Nexus secret and environment policy enforcement`
+Read [AGENTS.md](AGENTS.md) before making changes. It is the canonical operational guide for Codex and developers: controlling-source hierarchy, current Phase 0 status, package ownership, dependency rules, setup, verification, migrations, security, escalation, and Definition of Done. Use the [architecture map](docs/architecture/README.md) to navigate repository governance and package documentation.
 
-The repository contains minimal smoke-only deployable applications, explicit package boundaries, a repeatable PostgreSQL/Drizzle migration harness, deterministic fixtures, a standardized Vitest correctness harness, a provider-free evaluation system, and a machine-readable Architecture Contract registry. Planned contracts and evaluations remain visibly unimplemented rather than appearing as passing behavior. No Nexus business schema or behavior has been introduced.
+Phase 0 is nearly complete but is not complete. The repository contains smoke-only deployable applications and the engineering harness through observability, correlation, and promotion/Shadow Mode controls. P0.08-T02 remains deferred until the first real GCP deployment or shared remote environment; no GCP environment has been deployed. P0.10-T02 baseline ADRs and P0.10-T03 deployment-smoke/exit work remain upcoming. No Nexus business schema or Phase 1 behavior has been introduced.
 
 ## Prerequisites
 
