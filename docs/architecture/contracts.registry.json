@@ -72,6 +72,18 @@
       "description": "Repository architecture map plus Architecture Contract governance, review, and extension rules."
     },
     {
+      "id": "architecture-decision-records",
+      "kind": "path",
+      "reference": "docs/architecture/adr",
+      "description": "Accepted baseline implementation decisions with context, alternatives, consequences, guardrails, and revisit triggers."
+    },
+    {
+      "id": "architecture-decision-index",
+      "kind": "path",
+      "reference": "docs/architecture/adr/README.md",
+      "description": "ADR authority, status, numbering, proposal, history, and supersession convention plus the baseline index."
+    },
+    {
       "id": "agent-operating-guide",
       "kind": "path",
       "reference": "AGENTS.md",
@@ -1122,6 +1134,8 @@
             "repository-guide",
             "agent-operating-guide",
             "architecture-guide",
+            "architecture-decision-records",
+            "architecture-decision-index",
             "testing-guide",
             "evaluation-guide",
             "security-governance-guide",
@@ -1141,7 +1155,7 @@
             "promotion-control-execution",
             "promotion-control-guide"
           ],
-          "reason": "The root operating guide and architecture map make commands, ownership, boundaries, contract status, infrastructure procedures, and safety rules discoverable; semantic completeness remains an ongoing review property."
+          "reason": "The root operating guide, architecture map, and baseline ADR set make commands, ownership, boundaries, contract status, durable decisions, supersession rules, infrastructure procedures, and safety rules discoverable; semantic completeness remains an ongoing review property."
         },
         "runtime": {
           "status": "partial",
@@ -1167,12 +1181,14 @@
           "evidence": [
             "architecture-governance-guide",
             "agent-operating-guide",
+            "architecture-decision-records",
+            "architecture-decision-index",
             "terraform-runbook",
             "github-dev-wif-runbook",
             "observability-guide",
             "promotion-control-guide"
           ],
-          "reason": "The operating guide defines escalation and completion rules, and the WIF runbook makes dev identity prerequisites and trust boundaries reproducible; architecture, infrastructure, telemetry, promotion/authority separation, deployment IAM, exposure, cost, and work-packet scope still require explicit review."
+          "reason": "The operating guide defines escalation and completion rules, the ADR set preserves major implementation rationale and change history, and the WIF runbook makes dev identity prerequisites and trust boundaries reproducible; architecture, infrastructure, telemetry, promotion/authority separation, deployment IAM, exposure, cost, and work-packet scope still require explicit review."
         }
       }
     },

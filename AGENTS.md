@@ -65,9 +65,10 @@ and manual identity smoke without applying application infrastructure. Its
 deployment-resource IAM remains deliberately deferred to the first reviewed
 deployment plan.
 
-Upcoming packets are P0.10-T02 (baseline ADRs) and P0.10-T03 (deployment smoke and
-Phase 0 exit). P0.10-T03 cannot fully pass until P0.08-T02 and a non-production
-deployment occur. Do not mark Phase 0 complete before those gates pass.
+The baseline [Architecture Decision Records](docs/architecture/adr/README.md) make
+major implementation decisions and supersession rules durable. P0.10-T03 deployment
+smoke and Phase 0 exit remain upcoming. Do not mark Phase 0 complete before a
+non-production deployment and its exit gates pass.
 
 ## Repository map
 

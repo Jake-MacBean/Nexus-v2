@@ -37,7 +37,7 @@ Architecture Contracts artifact.
 | Terraform              | [Terraform guide](../../infra/terraform/README.md)                                                        | Unapplied GCP skeleton, environment separation, and dev WIF bootstrap       |
 | Observability          | [Observability guide](../observability.md)                                                                | Technical telemetry, correlation, privacy, and exporter boundary            |
 | Promotion control      | [Promotion-control guide](../promotion-control.md)                                                        | Feature modes, Shadow side-effect boundary, and Authority separation        |
-| Future ADRs            | [Future ADR index](#future-adr-index)                                                                     | Planned P0.10-T02 decision-record location                                  |
+| Architecture decisions | [ADR index](adr/README.md)                                                                                | Durable decisions, rationale, consequences, and supersession policy         |
 
 Package-level ownership and prohibited responsibilities live in each package README.
 The root guide contains the compact one-line package map.
@@ -81,11 +81,12 @@ read-only hosted identity smoke. The application environment roots remain
 unapplied. P0.10-T03 still owns the first non-production deployment and its
 reviewed deployment-resource IAM. Phase 0 is not complete.
 
-## Future ADR index
+## Architecture Decision Records
 
-P0.10-T02 owns the baseline ADRs and their index. Until that packet creates the
-reviewed files, this section is the discoverable placeholder for the future location:
-`docs/architecture/adrs/`. Do not create or infer ADR decisions in P0.10-T01.
+The live [ADR index](adr/README.md) records durable implementation decisions made
+within the controlling Foundation and Architecture Contracts. ADRs explain context,
+alternatives, consequences, guardrails, and revisit triggers; they do not revise or
+outrank controlling architecture.
 
 ## Architecture Contract governance
 

@@ -6,7 +6,7 @@ Nexus v2 is being built as a clean, TypeScript-first platform. This repository c
 
 Read [AGENTS.md](AGENTS.md) before making changes. It is the canonical operational guide for Codex and developers: controlling-source hierarchy, current Phase 0 status, package ownership, dependency rules, setup, verification, migrations, security, escalation, and Definition of Done. Use the [architecture map](docs/architecture/README.md) to navigate repository governance and package documentation.
 
-Phase 0 is nearly complete but is not complete. The repository contains smoke-only deployable applications and the engineering harness through observability, correlation, and promotion/Shadow Mode controls. P0.08-T02 remains deferred until the first real GCP deployment or shared remote environment; no GCP environment has been deployed. P0.10-T02 baseline ADRs and P0.10-T03 deployment-smoke/exit work remain upcoming. No Nexus business schema or Phase 1 behavior has been introduced.
+Phase 0 is nearly complete but is not complete. The repository contains smoke-only deployable applications and the engineering harness through observability, correlation, promotion/Shadow Mode controls, and the dev GitHub-to-GCP identity bootstrap. The [baseline ADR index](docs/architecture/adr/README.md) records the major implementation decisions. P0.10-T03 deployment-smoke/exit work remains upcoming; no Nexus application environment, business schema, or Phase 1 behavior has been deployed or introduced.
 
 ## Prerequisites
 
