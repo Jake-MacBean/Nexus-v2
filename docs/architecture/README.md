@@ -24,20 +24,20 @@ Architecture Contracts artifact.
 
 ## Repository implementation documentation
 
-| Area                   | Guide                                                                                                     | What it establishes                                                              |
-| ---------------------- | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| Operating rules        | [Root AGENTS.md](../../AGENTS.md)                                                                         | Status, setup, ownership, work-packet lifecycle, escalation, and completion      |
-| Dependency enforcement | [Architecture checker](../../architecture/README.md)                                                      | Machine-enforced package directions and public boundaries                        |
-| Contract governance    | [Registry](contracts.registry.json) and [governance below](#architecture-contract-governance)             | AC evidence channels, status honesty, and contribution procedure                 |
-| Testing                | [Testing guide](../testing.md)                                                                            | Unit, integration, evaluation, contract, and security test separation            |
-| Evaluations            | [Evaluation guide](../../evaluations/README.md)                                                           | Judgment evidence, planned/executable status, provider and cost isolation        |
-| Security/environment   | [Security guide](../security/README.md) and [environment registry](../security/environment.registry.json) | Secret handling, environment vocabulary, and registered variables                |
-| Database               | [Database package guide](../../packages/database/README.md)                                               | Drizzle ownership, reviewed migrations, and guarded local operations             |
-| Local infrastructure   | [Infrastructure guide](../../infra/README.md)                                                             | PostgreSQL/Temporal lifecycle and local safety                                   |
-| Terraform              | [Terraform guide](../../infra/terraform/README.md)                                                        | Unapplied GCP skeleton, environment separation, and deferred deployment identity |
-| Observability          | [Observability guide](../observability.md)                                                                | Technical telemetry, correlation, privacy, and exporter boundary                 |
-| Promotion control      | [Promotion-control guide](../promotion-control.md)                                                        | Feature modes, Shadow side-effect boundary, and Authority separation             |
-| Future ADRs            | [Future ADR index](#future-adr-index)                                                                     | Planned P0.10-T02 decision-record location                                       |
+| Area                   | Guide                                                                                                     | What it establishes                                                         |
+| ---------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Operating rules        | [Root AGENTS.md](../../AGENTS.md)                                                                         | Status, setup, ownership, work-packet lifecycle, escalation, and completion |
+| Dependency enforcement | [Architecture checker](../../architecture/README.md)                                                      | Machine-enforced package directions and public boundaries                   |
+| Contract governance    | [Registry](contracts.registry.json) and [governance below](#architecture-contract-governance)             | AC evidence channels, status honesty, and contribution procedure            |
+| Testing                | [Testing guide](../testing.md)                                                                            | Unit, integration, evaluation, contract, and security test separation       |
+| Evaluations            | [Evaluation guide](../../evaluations/README.md)                                                           | Judgment evidence, planned/executable status, provider and cost isolation   |
+| Security/environment   | [Security guide](../security/README.md) and [environment registry](../security/environment.registry.json) | Secret handling, environment vocabulary, and registered variables           |
+| Database               | [Database package guide](../../packages/database/README.md)                                               | Drizzle ownership, reviewed migrations, and guarded local operations        |
+| Local infrastructure   | [Infrastructure guide](../../infra/README.md)                                                             | PostgreSQL/Temporal lifecycle and local safety                              |
+| Terraform              | [Terraform guide](../../infra/terraform/README.md)                                                        | Unapplied GCP skeleton, environment separation, and dev WIF bootstrap       |
+| Observability          | [Observability guide](../observability.md)                                                                | Technical telemetry, correlation, privacy, and exporter boundary            |
+| Promotion control      | [Promotion-control guide](../promotion-control.md)                                                        | Feature modes, Shadow side-effect boundary, and Authority separation        |
+| Future ADRs            | [Future ADR index](#future-adr-index)                                                                     | Planned P0.10-T02 decision-record location                                  |
 
 Package-level ownership and prohibited responsibilities live in each package README.
 The root guide contains the compact one-line package map.
@@ -76,9 +76,10 @@ objects and behavior are not implemented. Durable business events, outbox behavi
 Temporal business workflows, Authority, Alex, providers, and generated workspaces
 remain future architecture.
 
-P0.08-T02 remains deferred until the first real GCP deployment/shared remote
-environment/private alpha/GitHub-driven deployment. The Terraform skeleton has not
-been applied. Phase 0 is not complete.
+P0.08-T02 provides the dedicated dev GitHub OIDC/WIF bootstrap and a manual,
+read-only hosted identity smoke. The application environment roots remain
+unapplied. P0.10-T03 still owns the first non-production deployment and its
+reviewed deployment-resource IAM. Phase 0 is not complete.
 
 ## Future ADR index
 

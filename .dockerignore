@@ -1,0 +1,11 @@
+# Ephemeral credentials created by google-github-actions/auth must never enter an image context.
+gha-creds-*.json
+
+# Local state and developer-only material are not container inputs.
+.git/
+.env
+.env.*
+.terraform/
+*.tfstate
+*.tfstate.*
+node_modules/

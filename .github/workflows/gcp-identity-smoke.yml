@@ -1,0 +1,55 @@
+name: GCP identity smoke
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: nexus-gcp-identity-smoke
+  cancel-in-progress: false
+
+jobs:
+  identity-smoke:
+    name: Verify short-lived dev identity
+    if: ${{ github.repository_id == 1359498144 && github.repository_owner_id == 320386297 && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Authenticate to Google Cloud with GitHub OIDC
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          project_id: nexus-dev-507820
+          workload_identity_provider: projects/240944005221/locations/global/workloadIdentityPools/nexus-github/providers/nexus-v2
+          service_account: nexus-dev-deployer@nexus-dev-507820.iam.gserviceaccount.com
+          create_credentials_file: true
+
+      - name: Install Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3.0.1
+
+      - name: Verify intended identity and project without mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_account='nexus-dev-deployer@nexus-dev-507820.iam.gserviceaccount.com'
+          expected_project='nexus-dev-507820'
+          expected_project_number='240944005221'
+
+          active_account="$(gcloud auth list --filter=status:ACTIVE --format='value(account)' --limit=1)"
+          active_project="$(gcloud config get-value project 2>/dev/null)"
+          project_number="$(gcloud projects describe "$expected_project" --format='value(projectNumber)')"
+
+          test "$active_account" = "$expected_account"
+          test "$active_project" = "$expected_project"
+          test "$project_number" = "$expected_project_number"
+
+          printf 'Federated identity: %s\nProject: %s (%s)\n' \
+            "$active_account" "$active_project" "$project_number"

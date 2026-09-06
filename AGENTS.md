@@ -60,9 +60,10 @@ Completed harness work:
 - observability and correlation baseline;
 - feature-flag and Shadow Mode abstraction.
 
-Deferred: **P0.08-T02 — GitHub-to-Google workload identity path**. It remains
-deferred until the first real GCP deployment, shared remote environment, private
-alpha, or GitHub-driven deployment, avoiding premature cloud spend.
+P0.08-T02 provides the dev GitHub OIDC/Workload Identity Federation bootstrap
+and manual identity smoke without applying application infrastructure. Its
+deployment-resource IAM remains deliberately deferred to the first reviewed
+deployment plan.
 
 Upcoming packets are P0.10-T02 (baseline ADRs) and P0.10-T03 (deployment smoke and
 Phase 0 exit). P0.10-T03 cannot fully pass until P0.08-T02 and a non-production
@@ -282,13 +283,11 @@ commit, or allowlist it. Follow [docs/security/README.md](docs/security/README.m
 
 ## GCP and deployment status
 
-The [Terraform skeleton](infra/terraform/README.md) exists but has never been applied.
-No Nexus GCP environment is deployed. Do not configure or deploy Google Cloud merely
-because Terraform exists.
-
-P0.08-T02 must be completed before the first GCP deployment. It owns the
-GitHub-to-Google workload identity and deployment access path and must not be silently
-skipped while deferred.
+The [Terraform skeleton](infra/terraform/README.md) exists but its application roots
+have never been applied. The separately owned dev identity bootstrap creates only the
+GitHub-to-Google workload identity path and read-only smoke access. No Nexus GCP
+application environment is deployed. P0.10-T03 must review exact deployment-resource
+IAM before the first non-production deployment.
 
 ## Nexus v1 rule
 

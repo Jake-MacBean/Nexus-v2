@@ -144,6 +144,24 @@
       "description": "Credential-free validation, state safety, environment isolation, cost posture, and reviewed-plan procedure."
     },
     {
+      "id": "github-dev-wif-bootstrap",
+      "kind": "path",
+      "reference": "infra/terraform/bootstrap/github-dev",
+      "description": "Dev-only GitHub OIDC federation, immutable repository/ref trust, dedicated deployment identity, and least-privilege smoke access."
+    },
+    {
+      "id": "github-dev-wif-runbook",
+      "kind": "path",
+      "reference": "infra/terraform/bootstrap/github-dev/README.md",
+      "description": "Bootstrap, validation, state, rotation, propagation, cost, and no-key operating guidance."
+    },
+    {
+      "id": "github-dev-identity-smoke",
+      "kind": "path",
+      "reference": ".github/workflows/gcp-identity-smoke.yml",
+      "description": "Manual main-only hosted proof of short-lived dev identity and read-only project access."
+    },
+    {
       "id": "environment-example",
       "kind": "path",
       "reference": ".env.example",
@@ -1018,10 +1036,12 @@
             "terraform-foundation-module",
             "terraform-environment-roots",
             "terraform-runbook",
+            "github-dev-wif-bootstrap",
+            "github-dev-identity-smoke",
             "observability-implementation",
             "observability-test-command"
           ],
-          "reason": "The repository statically enforces secret and environment policy, defines separately stated cloud roots, and applies deterministic technical-log redaction without recording request bodies, credentials, or secret environment values."
+          "reason": "The repository statically enforces secret and environment policy, defines separate cloud roots, restricts dev federation by immutable repository/owner identity and main ref without a key, and applies deterministic technical-log redaction without recording request bodies, credentials, or secret environment values."
         },
         "runtime": {
           "status": "partial",
@@ -1030,9 +1050,10 @@
             "database-local-target-safety",
             "local-infrastructure-safety",
             "security-test-command",
-            "observability-test-command"
+            "observability-test-command",
+            "github-dev-identity-smoke"
           ],
-          "reason": "Destructive local database operations reject non-local targets, tests reject network, and observability privacy tests protect common secret keys; the cloud skeleton has not been applied, so deployed isolation is not proven."
+          "reason": "Destructive local database operations reject non-local targets, tests reject network, observability privacy tests protect common secret keys, and the manual dev identity smoke verifies short-lived access without deployment. Application cloud roots remain unapplied, so deployed environment isolation is not proven."
         },
         "eval": {
           "status": "not_applicable",
@@ -1045,9 +1066,10 @@
             "repository-guide",
             "architecture-governance-guide",
             "security-governance-guide",
-            "terraform-runbook"
+            "terraform-runbook",
+            "github-dev-wif-runbook"
           ],
-          "reason": "State, plan, IAM, resource, and cost review rules are documented; cloud workload identity, secret payload handling, and real environment evidence remain future gates."
+          "reason": "State, plan, IAM, resource, cost, dev workload identity, and keyless rotation rules are documented; deployment-resource IAM, secret payload handling, and staging/production evidence remain future gates."
         }
       }
     },
@@ -1110,6 +1132,9 @@
             "terraform-foundation-module",
             "terraform-environment-roots",
             "terraform-runbook",
+            "github-dev-wif-bootstrap",
+            "github-dev-wif-runbook",
+            "github-dev-identity-smoke",
             "observability-guide",
             "observability-test-command",
             "promotion-control-contracts",
@@ -1125,6 +1150,7 @@
             "architecture-test-command",
             "contracts-test-command",
             "security-test-command",
+            "github-dev-identity-smoke",
             "observability-test-command",
             "observability-smoke-test",
             "promotion-control-tests"
@@ -1142,10 +1168,11 @@
             "architecture-governance-guide",
             "agent-operating-guide",
             "terraform-runbook",
+            "github-dev-wif-runbook",
             "observability-guide",
             "promotion-control-guide"
           ],
-          "reason": "The operating guide defines escalation and completion rules; architecture, infrastructure, telemetry, promotion/authority separation, environment identity, IAM, exposure, cost, and work-packet scope still require explicit review."
+          "reason": "The operating guide defines escalation and completion rules, and the WIF runbook makes dev identity prerequisites and trust boundaries reproducible; architecture, infrastructure, telemetry, promotion/authority separation, deployment IAM, exposure, cost, and work-packet scope still require explicit review."
         }
       }
     },

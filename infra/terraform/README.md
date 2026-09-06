@@ -20,6 +20,7 @@ this new foundation, so the new code adopts 8.1.0 without migration baggage.
 
 ```text
 infra/terraform/
+├── bootstrap/github-dev/         GitHub OIDC/WIF bootstrap for development
 ├── modules/nexus_environment/    reusable one-environment foundation
 └── environments/
     ├── dev/                      fixed development root and state prefix
@@ -225,6 +226,9 @@ capacity/operations/versioning, Secret Manager operations, and monitoring/log
 ingestion. No HA, replicas, minimum Cloud Run instances, VPC connector, NAT,
 load balancer, Kubernetes, Redis, or speculative data/AI service is present.
 
-P0.08-T02 is the next infrastructure packet. It owns GitHub-to-Google workload
-identity and deployment access; this foundation contains no OIDC, federation,
-service-account key, GitHub secret, or deployment workflow.
+The dedicated [`bootstrap/github-dev`](bootstrap/github-dev/README.md) root owns
+the dev GitHub-to-Google workload identity path without creating a circular
+dependency on the application environment roots. It grants only identity
+impersonation and read-only project metadata access; deployment-resource IAM
+remains deferred to the first reviewed deployment plan. No service-account key
+or GitHub cloud secret exists.
